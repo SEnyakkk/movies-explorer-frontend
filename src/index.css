@@ -1,0 +1,52 @@
+@import url(./vendor/normalize.css);
+@import url(./vendor/fonts/fonts.css);
+
+.page__section-title {
+  margin: 0;
+  padding: 110px 0 23px;
+  border-bottom: black solid 1px;
+  width: 100%;
+  max-width: 1140px;
+  color: black;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  letter-spacing: -0.04em;
+}
+
+.page__section-title_type_techs {
+  padding-top: 100px;
+}
+
+@media screen and (min-width: 768px) and (max-width: 1279px) {
+  .page__section-title {
+    padding: 90px 0 23px;
+  }
+}
+@media screen and (max-width: 767px) {
+  .page__section-title {
+    padding: 70px 0 28px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+}
+
+.link {
+  transition: opacity 0.3s linear;
+  color: black;
+}
+
+/* .link:visited {
+  color: rgba(52, 86, 243, 1);
+} */
+
+.link:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.list-reset {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}

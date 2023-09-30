@@ -1,0 +1,52 @@
+.navigation {
+  display: flex;
+  width: 182px;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navigation__registration-button {
+  padding: 0;
+  margin: 0;
+  font-size: 12px;
+  line-height: 16px;
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+.navigation__login-button {
+  padding: 0;
+  margin: 0;
+  width: 76px;
+  height: 32px;
+  font-size: 12px;
+  line-height: 16px;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  background-color: rgba(52, 86, 243, 1);
+  transition: opacity 0.3s linear;
+  cursor: pointer;
+}
+
+.navigation__login-button:hover {
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 767px) {
+  .navigation {
+    width: 130px;
+  }
+
+  .navigation__registration-button {
+    font-size: 10px;
+  }
+
+  .navigation__login-button {
+    width: 54px;
+    height: 26px;
+    font-size: 10px;
+  }
+}
