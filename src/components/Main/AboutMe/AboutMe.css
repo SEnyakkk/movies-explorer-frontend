@@ -4,7 +4,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color:white;
+  background: rgba(250, 250, 250, 1);
+  ;
 }
 
 .about-me__info {

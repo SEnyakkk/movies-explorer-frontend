@@ -4,6 +4,8 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  background: rgba(248, 248, 248, 1);
+
 }
 
 .footer__title {
