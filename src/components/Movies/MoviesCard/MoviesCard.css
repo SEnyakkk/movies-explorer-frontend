@@ -78,6 +78,16 @@
   background-color: rgba(43, 224, 128, 1);
 }
 
+@media screen and (min-width: 768px) and (max-width: 1279px) {
+  .movies-card {
+    max-width: 339px;
+  }
+
+  .movies-card__image {
+    height: 190px;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .movies-card {
     max-width: 300px;
@@ -88,19 +98,11 @@
   }
 
   .movies-card__title {
-    font-size: 12px;
+    font-size: 13px;
   }
 
   .movies-card__duration {
-    font-size: 10px;
-  }
-
-  .movies-card__save-button {
-    margin: 14px 0;
-  }
-
-  .movies-card__button-delete {
-    margin: 14px 0;
+    font-size: 11px;
   }
 
   .movies-card__image {

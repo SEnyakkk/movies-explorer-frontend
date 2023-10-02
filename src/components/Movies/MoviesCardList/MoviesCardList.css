@@ -28,9 +28,9 @@
 
 @media screen and (min-width: 768px) and (max-width: 1279px) {
   .movies__list {
-    grid-template-columns: repeat(auto-fit, minmax(342px, 1fr));
-    gap: 35px 24px;
-    padding-bottom: 30px;
+    grid-template-columns: repeat(auto-fit, minmax(339px, 1fr));
+    gap: 36px 30px;
+    padding: 70px 30px 30px;
   }
 }
 
@@ -38,6 +38,6 @@
   .movies__list {
     padding: 40px 0 30px;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 16px;
+    gap: 20px;
   }
 }
