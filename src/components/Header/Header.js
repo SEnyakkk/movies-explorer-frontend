@@ -7,7 +7,7 @@ function Header() {
   return (
     <header className="header header_theme_promo ">
       <div className="header__container">
-        <Logo />
+        <Logo name={'header'}/>
         <Navigation />
       </div>
     </header>

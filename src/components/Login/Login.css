@@ -1,0 +1,5 @@
+@import url(../../components/Register/Register.css);
+
+.auth__form-submit_login {
+  padding: 202px 0 0;
+}
