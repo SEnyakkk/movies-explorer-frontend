@@ -8,7 +8,7 @@
 
 .search__form {
   display: flex;
-  padding: 73px 0 72px;
+  padding: 70px 0 70px;
   width: 100%;
   max-width: 1140px;
   border-bottom: rgba(232, 232, 232, 1) 1px solid;
@@ -16,8 +16,9 @@
 
 .search__form-container {
   display: flex;
-  padding: 16px 0 16px 16px;
+  padding: 16px 0 16px 18px;
   width: 100%;
+  min-height: 40px;
   background-color: #fdfdfd;
   box-shadow: 0px 3px 14px 0px rgba(0, 0, 0, 0.08);
   border-radius: 9px;
@@ -51,7 +52,7 @@
 }
 
 .search__form-input {
-  padding: 0 0 0 7px;
+  padding: 0 0 0 10px;
   width: 100%;
   font-weight: 400;
   font-size: 18px;

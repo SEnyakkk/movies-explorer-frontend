@@ -1,4 +1,4 @@
-.navigation {
+.header__links_login {
   display: flex;
   width: 182px;
   flex-direction: row;
@@ -6,45 +6,70 @@
   align-items: center;
 }
 
-.navigation__registration-button {
-  padding: 0;
-  margin: 0;
-  font-size: 12px;
-  line-height: 16px;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
+.header__links {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
 }
 
-.navigation__login-button {
+.header__link {
   padding: 0;
   margin: 0;
-  width: 76px;
-  height: 32px;
   font-size: 12px;
   line-height: 16px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.header__link_movies {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.header__link_movies_1st {
+  margin-left: 44px;
+  margin-right: 16px;
+}
+
+.header__link_active {
+  font-weight: 500;
+}
+
+.header__link_login {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 76px;
+  height: 32px;
   color: white;
-  border: none;
   border-radius: 3px;
   background-color: rgba(52, 86, 243, 1);
   transition: opacity 0.3s linear;
   cursor: pointer;
 }
 
-.navigation__login-button:hover {
-  opacity: 0.8;
+.header__link_user {
+  border: 2px solid rgba(170, 170, 170, 1);
+  border-radius: 50px;
+  min-width: 100px;
+  min-height: 32px;
+  background: url("../../images/profile.svg");
 }
 
 @media screen and (max-width: 767px) {
-  .navigation {
+  .header__links_login {
     width: 130px;
   }
 
-  .navigation__registration-button {
+  .header__link {
     font-size: 10px;
   }
 
-  .navigation__login-button {
+  .header__link_login {
     width: 54px;
     height: 26px;
     font-size: 10px;

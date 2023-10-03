@@ -8,3 +8,8 @@
   font-family: "Inter", Arial, sans-serif;
   color: black;
 }
+
+.page__auth {
+  display: flex;
+  background: rgba(255, 255, 255, 1);
+}

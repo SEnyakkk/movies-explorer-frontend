@@ -1,5 +1,12 @@
 @import url(../../components/Register/Register.css);
 
 .auth__form-submit_login {
-  padding: 202px 0 0;
+  padding: 203px 0 0;
+}
+
+
+@media screen and (max-width: 767px) {
+  .auth__form-submit_login {
+    padding: 291px 0 0;
+  }
 }
