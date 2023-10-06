@@ -9,7 +9,6 @@ function Header() {
 
     <header className={`header ${location.pathname === '/' ? 'header_theme_promo' : 'header_theme_main'}`}>
       <div className="header__container">
-
         <Logo />
         <Navigation />
       </div>

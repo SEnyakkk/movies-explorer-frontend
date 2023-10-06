@@ -113,9 +113,6 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-}
-
-.button-submit_theme_blue {
   color: #FFFFFF;
   background-color: #3456F3;
 }
@@ -147,13 +144,10 @@
 
   .profile__form {
     padding-top: 80px;
+    width: 260px;
   }
 
-  .page__main_type_profile {
-    max-width: 260px;
-  }
-
-  .profile__button-container {
+   .profile__button-container {
    padding-top: 179px;
   }
 

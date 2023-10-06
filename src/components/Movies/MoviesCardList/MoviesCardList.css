@@ -2,7 +2,7 @@
   margin: 0;
   padding: 70px 70px 30px;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  grid-template-columns: repeat(4, minmax(270px, 1fr));
   gap: 32px 20px;
   justify-content: space-between;
 }
@@ -41,3 +41,4 @@
     gap: 20px;
   }
 }
+
