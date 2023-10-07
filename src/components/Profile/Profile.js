@@ -14,12 +14,14 @@ function Profile() {
           <form name="profile-form" className="profile__form">
             <label className="profile__label">
               <span className='profile__input-title'>Имя</span>
-              <input type="text" name="profileName" id="input-profile-name" className="profile__input input-focus" placeholder="" required />
+              <input type="text" name="profileName" id="input-profile-name" className="profile__input input-focus" placeholder="Виталий" required minLength={8}
+        maxLength={30}/>
             </label>
             <span className="profile__span-error"></span>
             <label className="profile__label">
               <span className='profile__input-title'>E-mail</span>
-              <input type="email" name="profileEmail" id="input-profile-email" className="profile__input input-focus" placeholder="" required />
+              <input type="email" name="profileEmail" id="input-profile-email" className="profile__input input-focus" placeholder="E-mail" required minLength={8}
+        maxLength={30}/>
             </label>
             <span className="profile__span-error">что-то пошло не так...</span>
             <p className='profile__response-error'>
