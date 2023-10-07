@@ -3,7 +3,6 @@
   flex-direction: column;
   align-items: center;
   background-color: rgba(245, 245, 245, 1);
-  max-height: 625px;
   width: 100%;
 }
 
@@ -53,7 +52,6 @@
   .techs {
     padding: 0 50px;
     box-sizing: border-box;
-    max-height: 567px;
   }
 
   .techs__title {
@@ -68,6 +66,7 @@
 
   .techs__list {
     padding-top: 83px;
+    padding-bottom: 88px;
   }
 
   .techs__element {
@@ -79,10 +78,9 @@
 }
 
 @media screen and (max-width: 767px) {
-  .techs{
+  .techs {
     padding: 0 18px;
     box-sizing: border-box;
-    max-height: 651px;
   }
 
   .techs__title {

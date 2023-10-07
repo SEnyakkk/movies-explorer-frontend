@@ -1,3 +1,8 @@
+.bar-login {
+  margin: 0;
+  padding: 0;
+}
+
 .bar-login__container {
   display: flex;
   align-items: center;

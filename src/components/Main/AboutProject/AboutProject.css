@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  max-height: 608px;
   width: 100%;
 }
 
@@ -90,7 +89,6 @@
   .about-project {
     padding: 0 50px;
     box-sizing: border-box;
-    max-height: 585px;
   }
 
   .about-project__list {
@@ -116,7 +114,6 @@
   .about-project {
     padding: 0 18px;
     box-sizing: border-box;
-    max-height: 641px;
   }
 
   .about-project__list {

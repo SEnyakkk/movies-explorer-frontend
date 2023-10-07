@@ -6,7 +6,6 @@
 .auth__logo {
   margin-top: 70px;
   height: 38px;
-  width: 38px;
 }
 
 .auth__title {
@@ -18,7 +17,7 @@
   letter-spacing: 0em;
 }
 
-.auth__container {
+.auth {
   display: flex;
   flex-direction: column;
   max-width: 396px;
@@ -29,7 +28,7 @@
   flex-direction: column;
 }
 
-.auth__form_label {
+.auth__form-label {
   margin: 0;
   padding: 6px 0 0;
   font-size: 10px;
@@ -39,11 +38,11 @@
   color: rgba(160, 160, 160, 1);
 }
 
-.auth__form_label:first-of-type {
+.auth__form-label:first-of-type {
   padding: 0;
 }
 
-.auth__form_input {
+.auth__form-input {
   padding: 5px 0 10px;
   border: none;
   border-bottom: rgba(232, 232, 232, 1) 1px solid;
@@ -53,17 +52,17 @@
   color: rgba(0, 0, 0, 1);
 }
 
-.auth__form_input_invalid {
+.auth__form-input_invalid {
   color: rgba(238, 52, 101, 1);
 }
 
-.auth__form_input:focus {
+.auth__form-input:focus {
   outline: none;
   border-color: rgba(52, 86, 243, 1);
   box-shadow: horizontal offset;
 }
 
-.auth__form_span {
+.auth__form-span {
   min-height: 12px;
   padding: 6px 0 0;
   margin: 0;
@@ -72,7 +71,7 @@
   line-height: 12px;
   color: rgba(238, 52, 101, 1);
 }
-.auth__form_span_valid {
+.auth__form-span_valid {
   color: transparent;
   font-size: 0;
 }
@@ -81,24 +80,26 @@
   padding: 134px 0 0;
 }
 
-.auth__form_submit {
-  width: 100%;
-  height: 45px;
-  border: none;
+.auth__form-submit-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   border-radius: 3px;
-  background: rgba(52, 86, 243, 1);
+  width: 100%;
+  min-height: 45px;
+  background-color: rgba(52, 86, 243, 1);
   color: rgba(255, 255, 255, 1);
   font-size: 14px;
   font-weight: 500;
   line-height: 17px;
   text-align: center;
+  text-decoration: none;
+  box-sizing: border-box;
 }
 
-.auth__form_submit_disable {
+.auth__form-submit-btn_disable {
   background: rgba(248, 248, 248, 1);
   color: rgba(194, 194, 194, 1);
-
-
 }
 
 .auth__form-caption {
@@ -108,7 +109,6 @@
   font-weight: 400;
   line-height: 17px;
   color: rgba(160, 160, 160, 1);
-  font-family: Inter;
   text-align: center;
 }
 
@@ -137,11 +137,11 @@
     align-self: center;
   }
 
-  .auth__container {
+  .auth {
     max-width: 260px;
   }
 
-  .auth__form_submit {
+  .auth__form-submit-btn {
     font-size: 12px;
   }
 

@@ -3,7 +3,7 @@ import "./SearchForm.css"
 function SearchForm() {
 
   return (
-    <div className="search page__search">
+    <section className="search page__search" aria-label="поисковик">
       <form className="search__form">
         <div className="search__form-container">
           <div className="search__form-input-container">
@@ -20,7 +20,7 @@ function SearchForm() {
           </div>
         </div>
       </form>
-    </div>
+    </section>
   )
 }
 

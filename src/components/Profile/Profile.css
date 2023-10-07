@@ -39,7 +39,7 @@
 
 .profile__label:last-of-type {
   width: 100%;
-  border-top: 1px solid #E8E8E8;
+  border-top: 1px solid rgba(232, 232, 232, 1);
   padding-top: 17px;
 }
 
@@ -51,7 +51,7 @@
 
 .profile__span-error {
   padding: 0;
-  color: #FF3055;
+  color: rgba(238, 52, 101, 1);
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
@@ -63,7 +63,7 @@
   flex-direction: column;
   align-items: center;
   padding-top: 20px;
-  gap: 17px
+  gap: 17px;
 }
 
 .profile__button-edit {
@@ -75,34 +75,34 @@
   line-height: 16px;
   color: #000;
   text-align: center;
-  background-color: #FFFFFF;
+  background-color: transparent;
 }
 
 .profile__button_disabled {
-  background-color: #F8F8F8;
-  color: #C2C2C2;
+  background-color: rgba(248, 248, 248, 1);
+  color: rgba(194, 194, 194, 1);
   font-weight: 500;
 }
 
 .profile__button-logout {
   padding: 0;
   border: none;
-  color: #FF004D;
-  background-color: #FFFFFF;
+  color: rgba(238, 52, 101, 1);
+  background-color: white;
   font-size: 13px;
   font-weight: 500;
+  text-decoration: none;
 }
 
 .profile__response-error {
   margin: 0;
   padding: 171px 0 0;
   min-height: 14px;
-  color: #FF004C;
+  color: rgba(238, 52, 101, 1);
   text-align: center;
   font-size: 11px;
   line-height: 14px;
 }
-
 
 .button-submit {
   padding: 0;
@@ -113,13 +113,13 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  color: #FFFFFF;
-  background-color: #3456F3;
+  color: white;
+  background-color: rgba(52, 86, 243, 1);
 }
 
 .button-submit_disabled {
-  background-color: #F8F8F8;
-  color: #C2C2C2;
+  background-color: rgba(248, 248, 248, 1);
+  color: rgba(194, 194, 194, 1);
   font-weight: 500;
 }
 
@@ -135,7 +135,6 @@
   .profile__response-error {
     padding-top: 162px;
   }
-
 }
 @media screen and (max-width: 767px) {
   .profile__title {
@@ -147,8 +146,8 @@
     width: 260px;
   }
 
-   .profile__button-container {
-   padding-top: 179px;
+  .profile__button-container {
+    padding-top: 179px;
   }
 
   .profile__button-edit {
@@ -168,4 +167,3 @@
     line-height: 15px;
   }
 }
-

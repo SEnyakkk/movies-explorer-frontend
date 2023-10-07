@@ -73,16 +73,15 @@
 
   .header__bar-link_active {
     border-bottom: black solid 2px;
-    padding-bottom: 4px;
+    padding-bottom: 5px;
   }
 
   .header__bar-account {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    flex-grow: 1;
+    flex-grow: 0.9;
     max-width: 100px;
-    background-color: white;
   }
 }
 
@@ -118,15 +117,14 @@
 
   .header__bar-link_active {
     border-bottom: black solid 2px;
-    padding-bottom: 7px;
+    padding-bottom: 8px;
   }
 
   .header__bar-account {
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    flex-grow: 1;
+    flex-grow: 0.612;
     max-width: 100px;
-    background-color: white;
   }
 }

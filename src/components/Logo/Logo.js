@@ -5,7 +5,7 @@ import "./Logo.css"
 function Logo() {
   return (
     <Link to="/" className='logo link'>
-      <img src={headerLogo} alt="Лого" className="logo__img" />
+      <img src={headerLogo} alt="Лого" className="logo-img" />
     </Link>
   )
 }
