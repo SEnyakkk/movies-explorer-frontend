@@ -120,10 +120,6 @@
   .auth__logo {
     margin-top: 232px;
   }
-
-  .auth__form-submit {
-    padding: 152px 0 0;
-  }
 }
 
 @media screen and (max-width: 767px) {
