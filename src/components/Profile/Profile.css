@@ -103,6 +103,9 @@
   font-size: 11px;
   line-height: 14px;
 }
+.profile__response-success {
+  color: rgb(33, 184, 98);
+}
 
 .button-submit {
   padding: 0;

@@ -21,73 +21,73 @@ class MainApi {
   registerUser(name, email, password) {
     return this._request('/signup', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
+      headers: this._headers,
+      body: JSON.stringify(
         name, email, password
-      })
+      )
     })
   }
 
   loginUser(email, password) {
+    const data = { email, password };
     return this._request('/signin', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email, password
+      headers: this._headers,
+      body: JSON.stringify(data)
+    })
+    //   .then((data) => {
+    //     if (data.token) {
+    //       localStorage.setItem('jwt', data.token);
+    //       return data;
+    //     }
+    //   })
+   }
+
+    getUserInfo() {
+      return this._request(`/users/me`, {
+        method: 'GET',
+        headers: this._headers
       })
-    })
-      .then((data) => {
-        if (data.token) {
-          localStorage.setItem('jwt', data.token);
-          return data;
-        }
+    }
+
+    setUserInfo(name, email) {
+      return this._request(`/users/me`, {
+        method: 'PATCH',
+        headers: this._headers,
+        body: JSON.stringify({
+          name: name,
+          email: email
+        })
       })
-  }
+    }
 
-  getUserInfo(token) {
-    return this._request(`/users/me`, {
-      headers: { 'Authorization': `Bearer ${token}` }
-    })
-  }
-
-  setUserInfo(username, email, token) {
-    return this._request(`/users/me`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        name: username,
-        email: email
+    getMyMovies() {
+      return this._request('/movies', {
+        method: 'GET',
+        headers: this._headers
       })
-    })
+    }
+
+    selectMovie(movie) {
+      return this._request('/movies', {
+        method: 'POST',
+        headers: this._headers,
+        body: JSON.stringify(movie)
+      })
+    }
+
+    deleteMyMovie(movieId) {
+      return this._request(`/movies/${movieId}`, {
+        method: 'DELETE',
+        headers: this._headers
+      })
+    }
+
+
+    setToken(token) {
+      this._headers['Authorization'] = `Bearer ${token}`
+    }
   }
 
-  getMyMovies(token) {
-    return this._request('/movies', {
-      headers: { "Authorization": `Bearer ${token}` }
-    })
-  }
 
-  selectMovie(movie, token) {
-    return this._request('/movies', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify(movie)
-    })
-  }
-
-  deleteMyMovie(movieId, token) {
-    return this._request(`/movies/${movieId}`, {
-      method: 'DELETE',
-      headers: { "Authorization": `Bearer ${token}` }
-    })
-  }
-}
-
-
-export const mainApi = new MainApi();
+  export const mainApi = new MainApi();

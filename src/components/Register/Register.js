@@ -16,6 +16,11 @@ function Register({ onRegister, isLoggedIn, }) {
     }
   }, [isLoggedIn]);
 
+  const onSubmit = (e) => {
+    e.preventDefault();
+    onRegister(values);
+  };
+
   return (
     <main className="page__auth">
       <section className="auth">
@@ -23,10 +28,7 @@ function Register({ onRegister, isLoggedIn, }) {
           <img src={headerLogo} alt="Лого" className="logo-img" />
         </Link>
         <h1 className="auth__title">Добро пожаловать!</h1>
-        <form onSubmit={(e) => {
-          e.preventDefault();
-          onRegister(values);
-        }} className="auth__form">
+        <form onSubmit={onSubmit} className="auth__form">
 
           <label className="auth__form-label">Имя</label>
           <input type="text" className="auth__form-input"
@@ -37,7 +39,7 @@ function Register({ onRegister, isLoggedIn, }) {
             minLength={2}
             maxLength={30}
             required />
-          <span className="auth__form-span">{errors.name}{validateName(values.name).message}</span>
+          <span className="auth__form-span">{errors.name} {validateName(values.name).message}</span>
 
           <label className="auth__form-label">E-mail</label>
           <input type="email" className="auth__form-input"
@@ -48,10 +50,10 @@ function Register({ onRegister, isLoggedIn, }) {
             minLength={2}
             maxLength={30}
             required />
-          <span className="auth__form-span">{errors.email}{validateEmail(values.email).message}</span>
+          <span className="auth__form-span">{errors.email} {validateEmail(values.email).message}</span>
 
           <label className="auth__form-label">Пароль</label>
-          <input type="password" className="auth__form-input"
+          <input type="password" className={`auth__form-input ${!isValid ? 'auth__form-input_invalid': ''}`}
             name="password"
             value={values.password || ''}
             placeholder="введите пароль"
@@ -64,7 +66,7 @@ function Register({ onRegister, isLoggedIn, }) {
           <div className="auth__form-submit">
             <button
               type="submit"
-              className={`auth__form-submit-btn ${validateEmail(values.email).invalid ? `auth__form-submit-btn_disable` : ''} link`}
+              className={`auth__form-submit-btn ${!isValid || validateEmail(values.email).invalid ? `auth__form-submit-btn_disable` : ''} link`}
               disabled={
                 !isValid ||
                 validateEmail(values.email).invalid}>
