@@ -6,20 +6,7 @@ class MoviesApi {
     };
   }
 
-//   _isResOk = (res) => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`)
-
-//   getMovies() {
-//     return fetch(this._url, {
-//       method: 'GET',
-//       headers: { 'Content-Type': 'application/json' }
-//     })
-//       .then(res => this._isResOk);
-//   }
-// }
-
-// export const moviesApi = new MoviesApi();
-
-_getResponseData(res) {
+_isResOk(res) {
   if (!res.ok) {
     return Promise.reject(`Ошибка: ${res.status}`)
   }
@@ -34,7 +21,7 @@ getMovies() {
     method: 'GET',
     headers: this._headers
   })
-    .then(res => this._getResponseData(res));
+    .then(res => this._isResOk(res));
 }
 }
 
