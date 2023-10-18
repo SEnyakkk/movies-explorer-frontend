@@ -1,18 +1,23 @@
 import "./Login.css"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import headerLogo from "../../images/logo.svg";
 import useFormValidation from "../../hooks/useFormValidation";
-import { useEffect } from "react";
-import { validateEmail, validateName } from "../../utils/constants";
+import { useState } from "react";
+import { validateEmail } from "../../utils/constants";
 
 
 function Login({ onLogin }) {
-  const { values, handleChange, errors, isValid } = useFormValidation();
-  const navigate = useNavigate();
+  const { values, handleChange, errors, isValid, setIsValid } = useFormValidation();
+  const [resMessage, setResMessage] = useState('');
 
   const onSubmit = (e) => {
     e.preventDefault();
-    onLogin(values.email, values.password);
+    onLogin(values.email, values.password)
+      .catch((e) => {
+        const msg = 'При авторизации произошла ошибка.';
+        setResMessage(msg);
+        setIsValid(false);
+      })
   };
 
   return (
@@ -47,6 +52,9 @@ function Login({ onLogin }) {
           <span className={`auth__form-span ${isValid ? '' : 'auth__form-input_invalid'}`}>{errors.password}</span>
 
           <div className="auth__form-submit-login">
+            <p className="auth__form-submit-res">
+              {!isValid && resMessage}
+            </p>
             <button
               type="submit"
               className={`auth__form-submit-btn ${!isValid || validateEmail(values.email).invalid ? `auth__form-submit-btn_disable` : ''} link`}
@@ -57,7 +65,7 @@ function Login({ onLogin }) {
             </button>
 
             <p className="auth__form-caption">
-              {'Ещё не зарегистрированы? '}
+              'Ещё не зарегистрированы? '
               <Link to="/signup" className="auth__form-link-caption link">Регистрация</Link>
             </p>
           </div>

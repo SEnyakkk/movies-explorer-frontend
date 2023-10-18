@@ -1,24 +1,23 @@
 import "./Register.css"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import headerLogo from "../../images/logo.svg";
 import useFormValidation from "../../hooks/useFormValidation";
-import { useEffect } from "react";
+import {  useState } from "react";
 import { validateEmail, validateName } from "../../utils/constants";
 
 
-function Register({ onRegister, isLoggedIn, }) {
-  const { values, handleChange, errors, isValid } = useFormValidation();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigate('/movies');
-    }
-  }, [isLoggedIn]);
+function Register({ onRegister }) {
+  const { values, handleChange, errors, isValid, setIsValid } = useFormValidation();
+  const [resMessage, setResMessage] = useState('');
 
   const onSubmit = (e) => {
     e.preventDefault();
-    onRegister(values);
+    onRegister(values.name, values.email, values.password)
+      .catch((e) => {
+        const msg = 'При регистрации произошла ошибка.';
+        setResMessage(msg);
+        setIsValid(false);
+      })
   };
 
   return (
@@ -53,7 +52,7 @@ function Register({ onRegister, isLoggedIn, }) {
           <span className="auth__form-span">{errors.email} {validateEmail(values.email).message}</span>
 
           <label className="auth__form-label">Пароль</label>
-          <input type="password" className={`auth__form-input ${!isValid ? 'auth__form-input_invalid': ''}`}
+          <input type="password" className={`auth__form-input ${!isValid ? 'auth__form-input_invalid' : ''}`}
             name="password"
             value={values.password || ''}
             placeholder="введите пароль"
@@ -64,6 +63,9 @@ function Register({ onRegister, isLoggedIn, }) {
           <span className={`auth__form-span ${isValid ? '' : 'auth__form-input_invalid'}`}>{errors.password}</span>
 
           <div className="auth__form-submit">
+            <p className="auth__form-submit-res">
+              {!isValid && resMessage}
+            </p>
             <button
               type="submit"
               className={`auth__form-submit-btn ${!isValid || validateEmail(values.email).invalid ? `auth__form-submit-btn_disable` : ''} link`}

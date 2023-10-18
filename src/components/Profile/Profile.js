@@ -9,14 +9,17 @@ import { mainApi } from "../../utils/MainApi";
 
 
 function Profile({ setCurrentUser }) {
-  const { values, handleChange, errors, isValid, setValues, setIsValid } = useFormValidation();
+  const { values, handleChange, isValid, setValues, setIsValid } = useFormValidation();
   const user = useContext(CurrentUserContext);
   const [submitBtn, setSubmitBtn] = useState(false);
   const [res, setRes] = useState({ type: 'default', msg: '' });
   const navigate = useNavigate();
 
   useEffect(() => {
-    setValues({ name: user.name, email: user.email });
+    setValues({
+      name: user.name,
+      email: user.email
+    });
   }, [setValues, user.email, user.name]);
 
   function handleUpdateUser(e) {
@@ -94,7 +97,7 @@ function Profile({ setCurrentUser }) {
                 minLength={2}
                 maxLength={30}
                 required
-              disabled={!submitBtn}
+                disabled={!submitBtn}
               />
             </label>
             <span className="profile__span-error">{validateEmail(values.email).message}</span>
@@ -113,12 +116,6 @@ function Profile({ setCurrentUser }) {
             }[res.type]}
 
             < div className="profile__button-container">
-              {/* {successMsg && (
-              <span className="profile-form__success-message">
-                Данные успешно обновлены!
-              </span>
-            )} */}
-
               {submitBtn ? (
                 <button
                   type="submit"
@@ -131,9 +128,7 @@ function Profile({ setCurrentUser }) {
                     validateName(values.name).invalid
                   }
                 >Сохранить</button>)
-                : (<button
-                  type="button"
-                  className="profile__button-edit button"
+                : (<button type="button" className="profile__button-edit button"
                   onClick={toggleSubmitBtn}>
                   Редактировать
                 </button>

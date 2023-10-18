@@ -1,12 +1,15 @@
 import BarLogin from "./BarLogin/BarLogin";
 import { useLocation } from "react-router-dom";
 import BarProfile from "./BarProfile/BarProfile";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import "./Navigation.css"
 import BarBurger from "./BarBurger/BarBurger";
+import {CurrentUserContext} from "../../context/CurrentUserContext";
 
 function Navigation() {
   const location = useLocation();
+  const user = useContext(CurrentUserContext);
+
   const [burgerActive, setBurgerActive] = useState(false);
 
   function handleBurger() {
@@ -14,7 +17,7 @@ function Navigation() {
   }
 
   function getType() {
-    if (location.pathname === '/') {
+    if (location.pathname === '/' && !user.isLoggedIn ) {
       return "BarLogin"
     } else {
       return "BarProfile"
