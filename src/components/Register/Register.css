@@ -76,8 +76,19 @@
   font-size: 0;
 }
 
+.auth__form-submit-status {
+  text-align: center;
+  padding: 40px 0 0;
+  font-size: 20px;
+  color: rgba(52, 86, 243, 1);
+}
+
+.auth__form-submit-status_type_err {
+  color: rgba(238, 52, 101, 1);
+}
+
 .auth__form-submit {
-  padding: 134px 0 0;
+  padding: 70px 0 0;
 }
 
 .auth__form-submit-btn {

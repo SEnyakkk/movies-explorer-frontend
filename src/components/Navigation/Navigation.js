@@ -1,37 +1,47 @@
 import BarLogin from "./BarLogin/BarLogin";
-import { useLocation } from "react-router-dom";
 import BarProfile from "./BarProfile/BarProfile";
+import { useLocation } from "react-router-dom";
 import { useState } from "react";
 import "./Navigation.css"
-import BarBurger from "./BarBurger/BarBurger";
+
 
 function Navigation() {
   const location = useLocation();
   const [burgerActive, setBurgerActive] = useState(false);
 
   function handleBurger() {
-    setBurgerActive((show) => !show)
+    setBurgerActive((e) => !e)
   }
 
-  function getType() {
+    function getType() {
     if (location.pathname === '/') {
-      return "BarLogin"
+      return "LoginBar"
     } else {
-      return "BarProfile"
+      return "ProfileBar"
     }
   }
 
-  const navType = getType()
+  const barType = getType()
 
   return (
     <>
       {{
-        BarLogin: <BarLogin />,
-        BarProfile: <>
-          <BarProfile />
-          <BarBurger onClose={handleBurger} active={burgerActive} />
+        LoginBar: <BarLogin />,
+        ProfileBar: <>
+          < BarProfile />
+          <button type="button" className="header__burger-btn button" onClick={handleBurger} />
+          <div className={`header__menu ${burgerActive ? " header__menu_active" : ""}`}>
+            <div className="header__blur" onClick={handleBurger}>
+              <div className="header__menu-content" onClick={(e) => e.stopPropagation()}>
+                <button
+                  type="button" className="header__close-button button" onClick={handleBurger}
+                />
+                <BarProfile burgerActive={burgerActive} />
+              </div>
+            </div>
+          </div>
         </>
-      }[navType]}
+      }[barType]}
     </>
   )
 }
