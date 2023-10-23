@@ -14,7 +14,32 @@ class MainApi {
       },
       body: JSON.stringify({ name, email, password })
     })
+      .then((res) => {
+        return res;
+      })
+      .catch((err) => console.log(err));
+  };
 
+  authorize = (email, password) => {
+    return fetch(`${this._url}/signin`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ email, password })
+    })
+    .then((res) => {
+      return res;
+    })
+      // .then((response => response.json()))
+      // .then((data) => {
+        // if (data.token) {
+        //   localStorage.setItem('token', data.token);
+        //   return data;
+        // }
+      // })
+      .catch(err => console.log(err))
   };
 }
 

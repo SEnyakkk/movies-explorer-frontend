@@ -10,21 +10,18 @@ function Register() {
   const navigate = useNavigate();
 
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function handleSubmit(evt) {
+    evt.preventDefault();
     mainApi.register(values.name, values.email, values.password)
       // https://dev.to/miriamfark/display-backend-errors-to-the-frontend-4hoa
-      .then((r) => {
-        if (!r.ok) {
-          return r.json().then((e) => setErrorMsg(Object.values(e).toString()))
+      .then((res) => {
+        if (!res.ok) {
+          return res.json().then((evt) => setErrorMsg(Object.values(evt).toString()))
         } else {
-          return r.json(r)
+          return res.json()
         }
       })
-
   }
-
-
 
   return (
     <main className="page__auth">
@@ -81,9 +78,9 @@ function Register() {
           <div className="auth__form-submit">
             <button
               type="submit"
-              className={`auth__form-submit-btn ${!isValid ? `auth__form-submit-btn_disable`
+              className={`auth__form-submit-btn ${!isValid || errorMsg ? `auth__form-submit-btn_disable`
                 : ''} link`}
-              disabled={!isValid}>
+              disabled={!isValid || errorMsg}>
               Зарегистрироваться
             </button>
             <p className="auth__form-caption">
