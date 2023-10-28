@@ -1,11 +1,12 @@
 import "./Register.css"
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate, useParams } from "react-router-dom"
 import headerLogo from "../../images/logo.svg";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 import { mainApi } from "../../utils/MainApi";
 
 
 function Register() {
+  const params = useParams();
   const { values, handleChange, errors, isValid, resetForm, setValues, errorMsg, setErrorMsg } = useFormWithValidation();
   const navigate = useNavigate();
 

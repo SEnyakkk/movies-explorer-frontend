@@ -5,16 +5,15 @@ import { useState } from "react";
 import "./Navigation.css"
 
 
-function Navigation() {
+function Navigation({ loggedIn }) {
   const location = useLocation();
   const [burgerActive, setBurgerActive] = useState(false);
-
   function handleBurger() {
     setBurgerActive((e) => !e)
   }
 
-    function getType() {
-    if (location.pathname === '/') {
+  function getType() {
+    if (!loggedIn && location.pathname === '/') {
       return "LoginBar"
     } else {
       return "ProfileBar"

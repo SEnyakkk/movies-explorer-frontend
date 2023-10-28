@@ -29,18 +29,31 @@ class MainApi {
       },
       body: JSON.stringify({ email, password })
     })
-    .then((res) => {
-      return res;
-    })
+      .then((res) => {
+        return res;
+      })
       // .then((response => response.json()))
       // .then((data) => {
-        // if (data.token) {
-        //   localStorage.setItem('token', data.token);
-        //   return data;
-        // }
+      // if (data.token) {
+      //   localStorage.setItem('token', data.token);
+      //   return data;
+      // }
       // })
       .catch(err => console.log(err))
   };
+
+  getContent = (token) => {
+    return fetch(`${this._url}/users/me`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+      .then(res => res.json())
+      .then(data => data)
+  }
 }
 
 export const mainApi = new MainApi();
