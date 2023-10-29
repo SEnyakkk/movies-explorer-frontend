@@ -3,58 +3,67 @@ class MainApi {
     this._url = 'http://localhost:3000';
   }
 
+  _isResOk(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject(`Статус ошибки: ${res.status}`);
+  }
 
-  // https://practicum.yandex.ru/learn/web/courses/134735fe-bc3e-4772-b04d-206235915714/sprints/86159/topics/fbfdc93d-f128-4916-905c-07305c7aea27/lessons/dc184853-1dd1-4e04-a7ff-86a5a02e0f71/
+  _request(endpoint, options, url = this._url) {
+    return fetch(`${url}${endpoint}`, options)
+      .then(this._isResOk)
+  }
+
   register = (name, email, password) => {
-    return fetch(`${this._url}/signup`, {
+    return this._request('/signup', {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ name, email, password })
-    })
-      .then((res) => {
-        return res;
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name, email, password
       })
-      .catch((err) => console.log(err));
+    })
   };
 
   authorize = (email, password) => {
-    return fetch(`${this._url}/signin`, {
+    return this._request('/signin', {
       method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ email, password })
-    })
-      .then((res) => {
-        return res;
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        password
       })
-      // .then((response => response.json()))
-      // .then((data) => {
-      // if (data.token) {
-      //   localStorage.setItem('token', data.token);
-      //   return data;
-      // }
-      // })
-      .catch(err => console.log(err))
-  };
+    })
+      .then((data) => {
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          return data;
+        }
+      })
+  }
+
 
   getContent = (token) => {
-    return fetch(`${this._url}/users/me`, {
+    return this._request(`/users/me`, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`
       }
     })
-      .then(res => res.json())
-      .then(data => data)
   }
+
+  editProfile = (name, email) => {
+    return this._request(`/users/me`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+      body: JSON.stringify(name, email)
+    })
+  };
 }
+
 
 export const mainApi = new MainApi();
 

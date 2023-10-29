@@ -13,32 +13,27 @@ function Login({ handleLogin }) {
   function handleSubmit(evt) {
     evt.preventDefault();
     mainApi.authorize(values.email, values.password)
-      .then((res) => {
-        if (!res.ok) {
-          return res.json().then((evt) => setErrorMsg(Object.values(evt).toString()))
-        } else {
-          return res.json()
-        }
-      })
+      // .then((res) => {
+      //   if (!res.ok) {
+      //     return res.json().then((evt) => setErrorMsg(Object.values(evt).toString()))
+      //   } else {
+      //     return res.json()
+      //   }
+      // })
       .then((data) => {
         if (data.token) {
-          localStorage.setItem('token', data.token);
-          handleLogin(data)
-          navigate('/movies', { replace: true });
+          handleLogin()
         }
       })
-      .catch(err => console.log(err));
-
-    //   if (!res.ok) {
-    //     return res.json().then((evt) => setErrorMsg(Object.values(evt).toString()))
-    //   } else {
-    //     return res.json()
-    //   }
-    // })
-    //     .then((res) => {
-    //   navigate('/login', { replace: true });
-    // }
-    // );
+      .catch(err => {
+        if (err.indexOf(401) !== -1) {
+          setErrorMsg("Вы ввели неправильный логин или пароль.");
+        } else if (err.indexOf(500) !== -1){
+          setErrorMsg("На сервере произошла ошибка.");
+        } else {
+          setErrorMsg("При авторизации произошла ошибка!");
+        }
+      })
   }
 
   return (

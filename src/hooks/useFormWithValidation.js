@@ -26,5 +26,5 @@ export function useFormWithValidation() {
   );
 
 
-  return { values, handleChange, errors, isValid, resetForm, setValues, errorMsg, setErrorMsg };
+  return { values, handleChange, errors, isValid, resetForm, setValues, errorMsg, setErrorMsg, setIsValid};
 }

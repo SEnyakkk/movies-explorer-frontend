@@ -9,38 +9,28 @@ function Navigation({ loggedIn }) {
   const location = useLocation();
   const [burgerActive, setBurgerActive] = useState(false);
   function handleBurger() {
-    setBurgerActive((e) => !e)
+    setBurgerActive(active => !active)
   }
-
-  function getType() {
-    if (!loggedIn && location.pathname === '/') {
-      return "LoginBar"
-    } else {
-      return "ProfileBar"
-    }
-  }
-
-  const barType = getType()
 
   return (
     <>
-      {{
-        LoginBar: <BarLogin />,
-        ProfileBar: <>
-          < BarProfile />
-          <button type="button" className="header__burger-btn button" onClick={handleBurger} />
-          <div className={`header__menu ${burgerActive ? " header__menu_active" : ""}`}>
-            <div className="header__blur" onClick={handleBurger}>
-              <div className="header__menu-content" onClick={(e) => e.stopPropagation()}>
-                <button
-                  type="button" className="header__close-button button" onClick={handleBurger}
-                />
-                <BarProfile burgerActive={burgerActive} />
+      {
+        !loggedIn && location.pathname === '/' ? <BarLogin /> :
+          <>
+            < BarProfile />
+            <button type="button" className="header__burger-btn button" onClick={handleBurger} />
+            <div className={`header__menu ${burgerActive ? " header__menu_active" : ""}`}>
+              <div className="header__blur" onClick={handleBurger}>
+                <div className="header__menu-content" onClick={(e) => e.stopPropagation()}>
+                  <button
+                    type="button" className="header__close-button button" onClick={handleBurger}
+                  />
+                  <BarProfile burgerActive={burgerActive} />
+                </div>
               </div>
             </div>
-          </div>
-        </>
-      }[barType]}
+          </>
+      }
     </>
   )
 }

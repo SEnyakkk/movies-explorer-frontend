@@ -1,41 +1,123 @@
 import "./Profile.css"
 import Header from "../Header/Header";
-import { Link } from "react-router-dom";
+import { useFormWithValidation } from "../../hooks/useFormWithValidation";
+import { useEffect, useState } from "react";
+import { mainApi } from "../../utils/MainApi";
 
 
-function Profile() {
+function Profile({ signOut, currentUser, setCurrentUser, tokenCheck }) {
+  const { values, handleChange, errors, isValid, resetForm, setValues, errorMsg, setErrorMsg, setIsValid } = useFormWithValidation();
+  console.log(currentUser)
+  const [isEdit, setIsEdit] = useState()
+
+  useEffect(() => {
+    tokenCheck();
+  }, [])
+
+  function toggleEdit() {
+    setIsEdit(edit => !edit);
+  }
+
+  useEffect(() => {
+    setValues({
+      name: currentUser.name,
+      email: currentUser.email
+    });
+  }, [setValues, currentUser.email, currentUser.name]);
+
+  useEffect(() => {
+    if (currentUser.name === values.name && currentUser.email === values.email) {
+      setIsValid(false);
+    }
+  }, [setIsValid, values.name, values.email])
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    mainApi.editProfile(values)
+      .then((res) => {
+        setCurrentUser({ name: res.name, email: res.email });
+        setIsValid(false)
+        toggleEdit()
+        setErrorMsg('Данные обновлены успешно!')
+      })
+      .catch((err) => {
+        if (err.indexOf(409) !== -1) {
+          setErrorMsg("Пользователь с таким email уже существует.");
+        } else if (err.indexOf(400 !== -1)) {
+          setErrorMsg("Введен некорректрый email");
+        } else if (err.indexOf(500 !== -1)) {
+          setErrorMsg("На сервере произошла ошибка.");
+        } else {
+          setErrorMsg("При регистрации пользователя произошла ошибка.");
+        }
+      })
+
+  }
+
 
   return (
     <>
       <Header />
       <main className="page__auth">
         <section className="profile">
-          <h1 className="profile__title">Привет, Виталий!</h1>
-          <form name="profile-form" className="profile__form">
+          <h1 className="profile__title">Привет, {currentUser.name}!</h1>
+          <form onSubmit={handleSubmit} name="profile-form" className="profile__form">
             <label className="profile__label">
               <span className='profile__input-title'>Имя</span>
-              <input type="text" name="profileName" id="input-profile-name" className="profile__input input-focus" placeholder="Виталий" required minLength={2}
-        maxLength={30}/>
+              <input type="text"
+
+                value={values.name || ''}
+                onChange={handleChange}
+                disabled={!isEdit}
+                pattern="^[а-яА-ЯёЁa-zA-Z\-]+$"
+                name="name"
+                id="input-profile-name"
+                className="profile__input input-focus"
+                placeholder="ведите имя"
+                required minLength={2}
+                maxLength={30}
+              />
+
             </label>
-            <span className="profile__span-error"></span>
+            <span className="profile__span-error">{errors.name}</span>
+
             <label className="profile__label">
               <span className='profile__input-title'>E-mail</span>
-              <input type="email" name="profileEmail" id="input-profile-email" className="profile__input input-focus" placeholder="E-mail" required minLength={2}
-        maxLength={30}/>
+              <input type="email"
+                value={values.email || ''}
+                onChange={handleChange}
+                disabled={!isEdit}
+                pattern="[^@\s]+@[^@\s]+\.[^@\s]+[^@\s]+"
+                name="email"
+                id="input-profile-email"
+                className="profile__input input-focus"
+                placeholder="введите E-mail"
+                required minLength={2}
+                maxLength={30} />
             </label>
-            <span className="profile__span-error">что-то пошло не так...</span>
+            <span className="profile__span-error">{errors.email}</span>
+
             <p className='profile__response-error'>
-              При обновлении профиля произошла ошибка.
+              {errorMsg}
             </p>
             <div className="profile__button-container">
-              <button type="submit" className="button-submit button-submit_disabled button">
+              {isEdit ? <button type="submit"
+                className={`button-submit ${!isValid || errorMsg ? 'button-submit_disabled' : ''} button`}
+                disabled={!isValid || errorMsg}>
                 Сохранить
-              </button>
+              </button> : ''}
+
               <>
-                <button type="button" className="profile__button-edit button" >
-                  Редактировать
+                <button type="button"
+                  className="profile__button-edit button"
+                  onClick={toggleEdit}
+                >
+                  {!isEdit ? `Редактировать` : ''}
                 </button>
-                <Link to="/" className="profile__button-logout link" >Выйти из аккаунта</Link>
+
+                <button type="button" onClick={signOut} className="profile__button-logout link" >
+                  {!isEdit ? `Выйти из аккаунта` : ''}
+                </button>
               </>
             </div>
           </form>

@@ -20,7 +20,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState({})
   const location = useLocation()
   const path = location.pathname
-  console.log(loggedIn)
+  // console.log(loggedIn)
 
   useEffect(() => {
     tokenCheck();
@@ -32,17 +32,34 @@ function App() {
       mainApi.getContent(token).then((res) => {
         if (res) {
           setLoggedIn(true);
-          // navigate("/movies", { replace: true })
           navigate(path)
+          setCurrentUser(res)
         }
       });
     }
   };
 
-  const handleLogin = (data) => {
-    setLoggedIn(true);
+  // function handleProfileSubmit(name, email) {
+  //   mainApi.editProfile(name, email)
+  //     .then((res) => {
+  //       setCurrentUser({ name: res.name, email: res.email });
+  //       // if (!res.ok) {
+  //       //   return res.json().then((evt) => setErrorMsg(Object.values(evt).toString()))
+  //       // } else {
+  //       return res.json()
+  //     }
+  //     )
+  // }
 
-    setCurrentUser(data);
+  function handleLogin() {
+    setLoggedIn(true);
+    navigate('/movies', { replace: true });
+  }
+
+  const signOut = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+    setLoggedIn(false);
   }
 
   return (
@@ -52,22 +69,40 @@ function App() {
 
           <Route path="/movies" element={<ProtectedRoute
             element={Movies}
-            loggedIn={loggedIn} />} />
+            loggedIn={loggedIn} />}
+          />
+
           <Route path="/saved-movies" element={<ProtectedRoute
             element={SavedMovies}
             path={"/saved-movies"}
-            loggedIn={loggedIn} />} />
+            loggedIn={loggedIn} />}
+          />
+
           <Route path="/profile" element={<ProtectedRoute
             element={Profile}
             path={"/profile"}
-            loggedIn={loggedIn} />} />
+            loggedIn={loggedIn}
+            signOut={signOut}
+            currentUser={currentUser}
+            setCurrentUser={setCurrentUser}
+            tokenCheck={tokenCheck}
+          // handleProfileSubmit={handleProfileSubmit}
+          />}
+          />
 
-          <Route path="/signup" element={<Register />} />
-          <Route path="/signin" element={<Login handleLogin={handleLogin} />} />
+          <Route path="/signup" element={<Register handleLogin={handleLogin} />}
+          />
+
+          <Route path="/signin" element={<Login handleLogin={handleLogin} />}
+          />
+
           <Route path="/" element={<Main
             path={"/"}
-            loggedIn={loggedIn} />} />
-          <Route path="*" element={<ErrorPage />} />
+            loggedIn={loggedIn} />}
+          />
+
+          <Route path="*" element={<ErrorPage />}
+          />
         </Routes>
       </div>
     </CurrentUserContext.Provider>

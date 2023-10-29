@@ -1,25 +1,34 @@
 import "./Register.css"
-import { Link, useNavigate, useParams } from "react-router-dom"
+import { Link } from "react-router-dom"
 import headerLogo from "../../images/logo.svg";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 import { mainApi } from "../../utils/MainApi";
 
 
-function Register() {
-  const params = useParams();
+function Register({ handleLogin }) {
   const { values, handleChange, errors, isValid, resetForm, setValues, errorMsg, setErrorMsg } = useFormWithValidation();
-  const navigate = useNavigate();
-
 
   function handleSubmit(evt) {
     evt.preventDefault();
     mainApi.register(values.name, values.email, values.password)
-      // https://dev.to/miriamfark/display-backend-errors-to-the-frontend-4hoa
       .then((res) => {
-        if (!res.ok) {
-          return res.json().then((evt) => setErrorMsg(Object.values(evt).toString()))
+        mainApi.authorize(values.email, values.password)
+          .then((data) => {
+            if (data.token) {
+              handleLogin()
+            }
+          })
+      })
+      .catch(err => {
+        console.log(err)
+        if (err.indexOf(409) !== -1) {
+          setErrorMsg("Пользователь с таким email уже существует.");
+        } else if (err.indexOf(400 !== -1)) {
+          setErrorMsg("Введен некорректрый email");
+        } else if (err.indexOf(500 !== -1)) {
+          setErrorMsg("На сервере произошла ошибка.");
         } else {
-          return res.json()
+          setErrorMsg("При регистрации пользователя произошла ошибка.");
         }
       })
   }
