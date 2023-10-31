@@ -12,17 +12,16 @@ function Movies({ }) {
 
   const [videoAll, setVideoAll] = useState()
   const [isLoading, setIsLoading] = useState(false)
-
+  const [filterText, setFilterText] = useState('');
   const [videoToShow, setVideoToShow] = useState()
-  const [filterText, setFilterText] = useState('b');
+
   const [isShort, setIsShort] = useState(false);
   console.log(videoToShow)
 
 
 
 
-  const onSerch = (evt) => {
-    evt.preventDefault();
+  const onSerch = (filterText) => {
     setIsLoading(true)
     if (!localStorage.getItem('localMovies')) {
       moviesApi.getMovies()
@@ -40,9 +39,9 @@ function Movies({ }) {
   }
 
   function filter(videoAll, filterText) {
-    localStorage.setItem('serchresult', JSON.stringify(videoAll.filter((video) => {
-      const serchresult = video.nameRU.toLowerCase().includes(filterText.toLowerCase())
-      return serchresult
+    localStorage.setItem('serchResult', JSON.stringify(videoAll.filter((video) => {
+      const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase())
+      return serchResult
     })
     ))
   }
@@ -51,11 +50,11 @@ function Movies({ }) {
     if (localStorage.localMovies) {
       setVideoAll(JSON.parse(localStorage.localMovies))
     }
-    if (localStorage.serchresult) {
-      setVideoToShow(JSON.parse(localStorage.serchresult))
+    if (localStorage.serchResult) {
+      setVideoToShow(JSON.parse(localStorage.serchResult))
     }
 
-  }, [localStorage.serchresult])
+  }, [localStorage.serchResult])
 
 
   return (
@@ -64,12 +63,11 @@ function Movies({ }) {
       <main className="page__main">
         <SearchForm
           onSerch={onSerch}
-          filterText={filterText}
+          setFilterText={setFilterText}
           isShort={isShort} />
         {isLoading ? <Preloader /> :
           <MoviesCardList
             movieCardList={videoToShow}
-            filterText={filterText}
             isShort={isShort}
 
           />
