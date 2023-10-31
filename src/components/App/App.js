@@ -12,44 +12,36 @@ import { useEffect, useState } from 'react';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 import { mainApi } from '../../utils/MainApi';
+import Preloader from '../Preloader/Preloader';
 
 
 function App() {
   const navigate = useNavigate();
   const [loggedIn, setLoggedIn] = useState(false)
   const [currentUser, setCurrentUser] = useState({})
+  const [isAppReady, setisAppReady] = useState(false)
   const location = useLocation()
   const path = location.pathname
   // console.log(loggedIn)
 
   useEffect(() => {
     tokenCheck();
-  }, [])
+  }, [localStorage.token])
 
   function tokenCheck() {
     const token = localStorage.getItem('token');
     if (token) {
+      setisAppReady(true)
       mainApi.getContent(token).then((res) => {
         if (res) {
           setLoggedIn(true);
           navigate(path)
           setCurrentUser(res)
+          setisAppReady(false)
         }
       });
     }
   };
-
-  // function handleProfileSubmit(name, email) {
-  //   mainApi.editProfile(name, email)
-  //     .then((res) => {
-  //       setCurrentUser({ name: res.name, email: res.email });
-  //       // if (!res.ok) {
-  //       //   return res.json().then((evt) => setErrorMsg(Object.values(evt).toString()))
-  //       // } else {
-  //       return res.json()
-  //     }
-  //     )
-  // }
 
   function handleLogin() {
     setLoggedIn(true);
@@ -57,56 +49,58 @@ function App() {
   }
 
   const signOut = () => {
-    localStorage.removeItem('token');
+    localStorage.clear();
     navigate('/');
     setLoggedIn(false);
   }
 
   return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Routes>
+    isAppReady ? (<Preloader />) : (
+      <CurrentUserContext.Provider value={currentUser}>
+        <div className="page">
+          <Routes>
 
-          <Route path="/movies" element={<ProtectedRoute
-            element={Movies}
-            loggedIn={loggedIn} />}
-          />
+            <Route path="/movies" element={<ProtectedRoute
+              element={Movies}
+              loggedIn={loggedIn}
+            />}
+            />
 
-          <Route path="/saved-movies" element={<ProtectedRoute
-            element={SavedMovies}
-            path={"/saved-movies"}
-            loggedIn={loggedIn} />}
-          />
+            <Route path="/saved-movies" element={<ProtectedRoute
+              element={SavedMovies}
+              path={"/saved-movies"}
+              loggedIn={loggedIn} />}
+            />
 
-          <Route path="/profile" element={<ProtectedRoute
-            element={Profile}
-            path={"/profile"}
-            loggedIn={loggedIn}
-            signOut={signOut}
-            currentUser={currentUser}
-            setCurrentUser={setCurrentUser}
-            tokenCheck={tokenCheck}
-          // handleProfileSubmit={handleProfileSubmit}
-          />}
-          />
+            <Route path="/profile" element={<ProtectedRoute
+              element={Profile}
+              path={"/profile"}
+              loggedIn={loggedIn}
+              signOut={signOut}
+              currentUser={currentUser}
+              setCurrentUser={setCurrentUser}
+              tokenCheck={tokenCheck}
+            />}
+            />
 
-          <Route path="/signup" element={<Register handleLogin={handleLogin} />}
-          />
+            <Route path="/signup" element={<Register handleLogin={handleLogin} />}
+            />
 
-          <Route path="/signin" element={<Login handleLogin={handleLogin} />}
-          />
+            <Route path="/signin" element={<Login handleLogin={handleLogin} />}
+            />
 
-          <Route path="/" element={<Main
-            path={"/"}
-            loggedIn={loggedIn} />}
-          />
+            <Route path="/" element={<Main
+              path={"/"}
+              loggedIn={loggedIn} />}
+            />
 
-          <Route path="*" element={<ErrorPage />}
-          />
-        </Routes>
-      </div>
-    </CurrentUserContext.Provider>
-  );
+            <Route path="*" element={<ErrorPage />}
+            />
+          </Routes>
+        </div>
+      </CurrentUserContext.Provider>
+    ));
+
 }
 
 export default App;

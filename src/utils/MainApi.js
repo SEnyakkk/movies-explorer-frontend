@@ -42,7 +42,6 @@ class MainApi {
       })
   }
 
-
   getContent = (token) => {
     return this._request(`/users/me`, {
       method: 'GET',
@@ -62,6 +61,14 @@ class MainApi {
       body: JSON.stringify(name, email)
     })
   };
+
+  getMyMovies(token) {
+    return this._request(`/movies`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      }
+    })
+  }
 }
 
 

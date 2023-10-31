@@ -3,36 +3,30 @@ import "./MoviesCard.css"
 
 function MoviesCard({ movieCard }) {
   const location = useLocation();
+  const myMovies = location.pathname === '/saved-movies'
+  const srcImage = myMovies ? movieCard.image : `${`https://api.nomoreparties.co`}${movieCard.image.url}`;
 
-  //выбор отрисовки кнопки
-  function getButtonType() {
-    if (location.pathname === '/saved-movies') {
-      return "delete"
-    }
-    if (movieCard.saved) {
-      return "saved"
-    }
-    return "enable"
-  }
-
-  const buttonType = getButtonType();
 
   return (
     <li className="movies-card">
       <div className="movies-card__container">
-        <img src={movieCard.image} alt={movieCard.nameRu} className="movies-card__image" />
+        <img src={srcImage} alt={movieCard.nameRU} className="movies-card__image" />
         <div className="movies-card__info">
           <div>
-            <h2 className="movies-card__title">{movieCard.nameRu}</h2>
+            <h2 className="movies-card__title">{movieCard.nameRU}</h2>
             <p className="movies-card__duration">{movieCard.duration}</p>
           </div>
-          <div className="movies-card__checkbox">{
-            {
-              delete: <button type="button" className="movies-card__button-delete button" />,
-              saved: <button type="button" className="movies-card__save-button movies-card__save-button_saved button"></button>,
-              enable: <button type="button" className="movies-card__save-button button"></button>
-            }[buttonType]
-          }
+          <div className="movies-card__checkbox">
+            {location.pathname === '/saved-movies' &&
+              <button type="button" className="movies-card__button-delete button" />}
+            {location.pathname === '/movies' &&
+              <>{movieCard.saved
+                ?
+                <button type="button" className="movies-card__save-button movies-card__save-button_saved button"></button>
+                :
+                <button type="button" className="movies-card__save-button button"></button>}
+              </>
+            }
           </div>
         </div>
       </div>

@@ -6,12 +6,12 @@ import { mainApi } from "../../utils/MainApi";
 
 
 function Register({ handleLogin }) {
-  const { values, handleChange, errors, isValid, resetForm, setValues, errorMsg, setErrorMsg } = useFormWithValidation();
+  const { values, handleChange, errors, isValid, errorMsg, setErrorMsg } = useFormWithValidation();
 
   function handleSubmit(evt) {
     evt.preventDefault();
     mainApi.register(values.name, values.email, values.password)
-      .then((res) => {
+      .then(() => {
         mainApi.authorize(values.email, values.password)
           .then((data) => {
             if (data.token) {
@@ -20,12 +20,13 @@ function Register({ handleLogin }) {
           })
       })
       .catch(err => {
-        console.log(err)
-        if (err.indexOf(409) !== -1) {
+        if (err.includes(409)) {
           setErrorMsg("Пользователь с таким email уже существует.");
-        } else if (err.indexOf(400 !== -1)) {
-          setErrorMsg("Введен некорректрый email");
-        } else if (err.indexOf(500 !== -1)) {
+        } else if (err.includes(400)) {
+          setErrorMsg("Проверьте введенные данные");
+        } else if (err.includes(401)) {
+          setErrorMsg("Ошибка авторизации");
+        } else if (err.includes(500)) {
           setErrorMsg("На сервере произошла ошибка.");
         } else {
           setErrorMsg("При регистрации пользователя произошла ошибка.");

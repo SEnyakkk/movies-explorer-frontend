@@ -1,37 +1,31 @@
 import "./Login.css"
-import { Link, useNavigate } from "react-router-dom"
+import { Link } from "react-router-dom"
 import headerLogo from "../../images/logo.svg";
 import { useFormWithValidation } from "../../hooks/useFormWithValidation";
 import { mainApi } from "../../utils/MainApi";
-import { useState } from "react";
-
 
 function Login({ handleLogin }) {
-  const { values, handleChange, errors, isValid, resetForm, setValues, errorMsg, setErrorMsg } = useFormWithValidation();
-  const navigate = useNavigate();
+  const { values, handleChange, errors, isValid, errorMsg, setErrorMsg } = useFormWithValidation();
 
   function handleSubmit(evt) {
     evt.preventDefault();
     mainApi.authorize(values.email, values.password)
-      // .then((res) => {
-      //   if (!res.ok) {
-      //     return res.json().then((evt) => setErrorMsg(Object.values(evt).toString()))
-      //   } else {
-      //     return res.json()
-      //   }
-      // })
       .then((data) => {
         if (data.token) {
           handleLogin()
         }
       })
       .catch(err => {
-        if (err.indexOf(401) !== -1) {
+        if (err.includes(409)) {
+          setErrorMsg("Пользователь с таким email уже существует.");
+        } else if (err.includes(400)) {
+          setErrorMsg("Проверьте введенные данные");
+        } else if (err.includes(401)) {
           setErrorMsg("Вы ввели неправильный логин или пароль.");
-        } else if (err.indexOf(500) !== -1){
+        } else if (err.includes(500)) {
           setErrorMsg("На сервере произошла ошибка.");
         } else {
-          setErrorMsg("При авторизации произошла ошибка!");
+          setErrorMsg("При авторизации пользователя произошла ошибка.");
         }
       })
   }

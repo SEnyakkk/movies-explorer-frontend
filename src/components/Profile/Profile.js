@@ -6,13 +6,13 @@ import { mainApi } from "../../utils/MainApi";
 
 
 function Profile({ signOut, currentUser, setCurrentUser, tokenCheck }) {
-  const { values, handleChange, errors, isValid, resetForm, setValues, errorMsg, setErrorMsg, setIsValid } = useFormWithValidation();
-  console.log(currentUser)
+  const { values, handleChange, errors, isValid, setValues, errorMsg, setErrorMsg, setIsValid } = useFormWithValidation();
+  // console.log(currentUser)
   const [isEdit, setIsEdit] = useState()
 
-  useEffect(() => {
-    tokenCheck();
-  }, [])
+  // useEffect(() => {
+  //   tokenCheck();
+  // }, [])
 
   function toggleEdit() {
     setIsEdit(edit => !edit);
@@ -41,14 +41,16 @@ function Profile({ signOut, currentUser, setCurrentUser, tokenCheck }) {
         setErrorMsg('Данные обновлены успешно!')
       })
       .catch((err) => {
-        if (err.indexOf(409) !== -1) {
+        if (err.includes(409)) {
           setErrorMsg("Пользователь с таким email уже существует.");
-        } else if (err.indexOf(400 !== -1)) {
-          setErrorMsg("Введен некорректрый email");
-        } else if (err.indexOf(500 !== -1)) {
+        } else if (err.includes(400)) {
+          setErrorMsg("Проверьте введенные данные");
+        } else if (err.includes(401)) {
+          setErrorMsg("Ошибка авторизации");
+        } else if (err.includes(500)) {
           setErrorMsg("На сервере произошла ошибка.");
         } else {
-          setErrorMsg("При регистрации пользователя произошла ошибка.");
+          setErrorMsg("При редактировании данных пользователя произошла ошибка.");
         }
       })
 

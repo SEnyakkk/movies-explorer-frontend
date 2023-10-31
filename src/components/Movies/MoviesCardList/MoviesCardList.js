@@ -2,12 +2,14 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import "./MoviesCardList.css"
 
 
-function MoviesCardList({ movieCardList, isMoreButtonPresent, onMore }) {
+function MoviesCardList({ movieCardList }) {
 
   return (
     <section className="movies" aria-label="Фильмы">
       <ul className="movies__list">
-        {movieCardList.map(card => (<MoviesCard key={card['id']} movieCard={card} />))}
+
+          {movieCardList ? movieCardList.map(card => (<MoviesCard key={card.id} movieCard={card} />)) : '' }
+
       </ul>
       <div className="movies__more-button-container">
         <button type="button"
