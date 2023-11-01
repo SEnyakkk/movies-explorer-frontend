@@ -2,9 +2,15 @@ import { useEffect, useState } from "react";
 import { useFormWithValidation } from "../../../hooks/useFormWithValidation";
 import "./SearchForm.css"
 
-function SearchForm({ onSerch, setFilterText }) {
+function SearchForm({ onSerch, setFilterText, checkFilter, isShort }) {
   const { values, handleChange, errors, isValid, errorMsg, setValues, setErrorMsg } = useFormWithValidation();
-  // const [filterText, setFilterText] = useState('');
+
+  useEffect(() => {
+    setValues({
+      filterText: localStorage.filterText,
+    });
+
+  }, []);
 
   function onSubmit(evt) {
     evt.preventDefault()
@@ -12,19 +18,8 @@ function SearchForm({ onSerch, setFilterText }) {
       setFilterText(evt.target.filterText.value)
       localStorage.setItem('filterText', evt.target.filterText.value)
       onSerch(evt.target.filterText.value)
-    }
+    } else { setErrorMsg("Введите название видео") }
   }
-
-  useEffect(() => {
-    setValues({ filterText: localStorage.filterText });
-  }, [setValues,]);
-
-  // useEffect(() => {
-  //   if (localStorage.filterText) {
-  //     setValues(JSON.parse(localStorage.filterText))
-  //   }
-  // }, [localStorage.filterText])
-  // console.log(filterText)
 
   return (
     <section className="search page__search" aria-label="поисковик">
@@ -46,14 +41,19 @@ function SearchForm({ onSerch, setFilterText }) {
           <div className="search__checkbox-container button">
             <label className="search__checkbox-label">
               <input className="search__checkbox"
+                checked={isShort}
+                onChange={checkFilter}
                 type="checkbox"
-                name="Checkbox"
-                id="Checkbox" />
+                name="сheckbox"
+                id="сheckbox" />
               <span className="search__checkbox-span" />
               <span className="search__checkbox-caption">Короткометражки</span>
             </label>
           </div>
         </div>
+        <span className="search__form-input-error">
+          {!values.filterText && errorMsg}
+        </span>
       </form>
     </section>
   )

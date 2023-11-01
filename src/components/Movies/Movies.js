@@ -9,44 +9,16 @@ import Preloader from "../Preloader/Preloader";
 
 
 function Movies({ }) {
-
+  const [searchError, setSerchError] = useState('')
+  const [isShort, setIsShort] = useState(false);
   const [videoAll, setVideoAll] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [filterText, setFilterText] = useState('');
   const [videoToShow, setVideoToShow] = useState()
 
-  const [isShort, setIsShort] = useState(false);
-  console.log(videoToShow)
-
-
-
-
-  const onSerch = (filterText) => {
-    setIsLoading(true)
-    if (!localStorage.getItem('localMovies')) {
-      moviesApi.getMovies()
-        .then((data) => {
-          localStorage.setItem('localMovies', JSON.stringify(data))
-          filter(data, filterText)
-          setIsLoading(false)
-        })
-        .catch(err => console.log(err))
-    } else {
-      filter(videoAll, filterText)
-      setIsLoading(false)
-
-    }
-  }
-
-  function filter(videoAll, filterText) {
-    localStorage.setItem('serchResult', JSON.stringify(videoAll.filter((video) => {
-      const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase())
-      return serchResult
-    })
-    ))
-  }
-
   useEffect(() => {
+
+    setIsShort(localStorage.filterCheckbox === "true")
     if (localStorage.localMovies) {
       setVideoAll(JSON.parse(localStorage.localMovies))
     }
@@ -56,19 +28,67 @@ function Movies({ }) {
 
   }, [localStorage.serchResult])
 
+  const onSerch = (filterText) => {
+    setIsLoading(true)
+    if (!localStorage.getItem('localMovies')) {
+      moviesApi.getMovies()
+        .then((data) => {
+          localStorage.setItem('localMovies', JSON.stringify(data))
+          filter(data, filterText, isShort)
+          setIsLoading(false)
+        })
+        .catch(err => console.log(err))
+    } else {
+      filter(videoAll, filterText, isShort)
+      setIsLoading(false)
+    }
+  }
+
+  function checkFilter() {
+    if (isShort) {
+      setIsShort(false);
+      localStorage.setItem('filterCheckbox', false)
+      filter(videoAll, filterText, false)
+    }
+    if (!isShort) {
+      setIsShort(true);
+      localStorage.setItem('filterCheckbox', true)
+      filter(videoAll, filterText, true)
+    }
+  }
+
+  function filter(videoAll, filterText, isShort) {
+
+    localStorage.setItem('serchResult', JSON.stringify(videoAll.filter((video) => {
+      if (!isShort) {
+        const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase())
+        return serchResult
+      } else {
+        const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase()) && video.duration <= "40"
+        return serchResult
+      }
+
+    })
+    ))
+  }
 
   return (
     <>
       <Header />
       <main className="page__main">
         <SearchForm
+          isShort={isShort}
           onSerch={onSerch}
           setFilterText={setFilterText}
-          isShort={isShort} />
+          checkFilter={checkFilter}
+        />
+
+        {searchError ?
+          <></> : ''}
+
         {isLoading ? <Preloader /> :
           <MoviesCardList
             movieCardList={videoToShow}
-            isShort={isShort}
 
           />
         }
