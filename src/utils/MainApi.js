@@ -69,6 +69,38 @@ class MainApi {
       }
     })
   }
+
+  addMovie(data, token) {
+    return this._request(`/movies`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        country: data.country,
+        director: data.director,
+        duration: data.duration,
+        year: data.year,
+        description: data.description,
+        image: data.image.url,
+        trailerLink: data.trailerLink,
+        thumbnail: data.image.formats.thumbnail.url,
+        movieId: data.id,
+        nameRU: data.nameRU,
+        nameEN: data.nameEN
+      })
+    })
+  }
+
+  deleteMovie(movieId, token) {
+    return this._request(`/movies/${movieId}`, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    })
+  }
 }
 
 

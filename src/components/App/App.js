@@ -1,7 +1,7 @@
 import './App.css';
 import '../../index.css'
 import Main from '../Main/Main';
-import { Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import ErrorPage from '../ErrorPage/ErrorPage';
 import Movies from '../Movies/Movies';
 import SavedMovies from '../SavedMovies/SavedMovies';
@@ -22,7 +22,7 @@ function App() {
   const [isAppReady, setisAppReady] = useState(false)
   const location = useLocation()
   const path = location.pathname
-  // console.log(loggedIn)
+
 
   useEffect(() => {
     tokenCheck();
@@ -83,10 +83,10 @@ function App() {
             />}
             />
 
-            <Route path="/signup" element={<Register handleLogin={handleLogin} />}
+            <Route path="/signup" element={loggedIn ? <Navigate to='/' replace /> : <Register handleLogin={handleLogin} />}
             />
 
-            <Route path="/signin" element={<Login handleLogin={handleLogin} />}
+            <Route path="/signin" element={loggedIn ? <Navigate to='/' replace /> : <Login handleLogin={handleLogin} />}
             />
 
             <Route path="/" element={<Main

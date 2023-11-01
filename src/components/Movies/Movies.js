@@ -16,6 +16,9 @@ function Movies({ }) {
   const [filterText, setFilterText] = useState('');
   const [videoToShow, setVideoToShow] = useState()
 
+  console.log(searchError)
+  // serchResult.length===0 setSerchError('Ничего не найдено')
+
   useEffect(() => {
 
     setIsShort(localStorage.filterCheckbox === "true")
@@ -45,6 +48,10 @@ function Movies({ }) {
   }
 
   function checkFilter() {
+    if (!videoToShow) {
+      // setSerchError('Ничего не найдено')
+      return
+    }
     if (isShort) {
       setIsShort(false);
       localStorage.setItem('filterCheckbox', false)
@@ -67,10 +74,10 @@ function Movies({ }) {
         const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase()) && video.duration <= "40"
         return serchResult
       }
-
     })
     ))
   }
+
 
   return (
     <>
@@ -84,7 +91,7 @@ function Movies({ }) {
         />
 
         {searchError ?
-          <></> : ''}
+          <span className="search__form-input-error">{searchError}</span> : ''}
 
         {isLoading ? <Preloader /> :
           <MoviesCardList

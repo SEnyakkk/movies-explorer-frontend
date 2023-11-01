@@ -52,7 +52,7 @@ function SearchForm({ onSerch, setFilterText, checkFilter, isShort }) {
           </div>
         </div>
         <span className="search__form-input-error">
-          {!values.filterText && errorMsg}
+          {errorMsg}
         </span>
       </form>
     </section>
