@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useFormWithValidation } from "../../../hooks/useFormWithValidation";
 import "./SearchForm.css"
 
-function SearchForm({ onSerch, setFilterText, checkFilter, isShort }) {
+function SearchForm({ onSerch, setFilterText, checkFilter, isShort, serverError }) {
   const { values, handleChange, errors, isValid, errorMsg, setValues, setErrorMsg } = useFormWithValidation();
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function SearchForm({ onSerch, setFilterText, checkFilter, isShort }) {
       setFilterText(evt.target.filterText.value)
       localStorage.setItem('filterText', evt.target.filterText.value)
       onSerch(evt.target.filterText.value)
-    } else { setErrorMsg("Введите название видео") }
+    } else { setErrorMsg(`Нужно ввести ключевое слово`) }
   }
 
   return (
@@ -52,7 +52,7 @@ function SearchForm({ onSerch, setFilterText, checkFilter, isShort }) {
           </div>
         </div>
         <span className="search__form-input-error">
-          {errorMsg}
+          {errorMsg} {serverError}
         </span>
       </form>
     </section>

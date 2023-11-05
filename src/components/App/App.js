@@ -20,6 +20,7 @@ function App() {
   const [loggedIn, setLoggedIn] = useState(false)
   const [currentUser, setCurrentUser] = useState({})
   const [isAppReady, setisAppReady] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const location = useLocation()
   const path = location.pathname
 
@@ -63,6 +64,7 @@ function App() {
             <Route path="/movies" element={<ProtectedRoute
               element={Movies}
               loggedIn={loggedIn}
+              currentUser={currentUser}
             />}
             />
 
@@ -83,10 +85,16 @@ function App() {
             />}
             />
 
-            <Route path="/signup" element={loggedIn ? <Navigate to='/' replace /> : <Register handleLogin={handleLogin} />}
+            <Route path="/signup" element={
+              loggedIn
+                ? <Navigate to='/' replace />
+                : <Register handleLogin={handleLogin} />}
             />
 
-            <Route path="/signin" element={loggedIn ? <Navigate to='/' replace /> : <Login handleLogin={handleLogin} />}
+            <Route path="/signin" element={
+              loggedIn
+                ? <Navigate to='/' replace />
+                : <Login handleLogin={handleLogin} />}
             />
 
             <Route path="/" element={<Main

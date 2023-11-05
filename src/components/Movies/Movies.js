@@ -8,16 +8,13 @@ import SearchForm from "./SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
 
 
-function Movies({ }) {
-  const [searchError, setSerchError] = useState('')
+function Movies({ currentUser }) {
+  const [serverError, setServerError] = useState('')
   const [isShort, setIsShort] = useState(false);
   const [videoAll, setVideoAll] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [filterText, setFilterText] = useState('');
   const [videoToShow, setVideoToShow] = useState()
-
-  console.log(searchError)
-  // serchResult.length===0 setSerchError('Ничего не найдено')
 
   useEffect(() => {
 
@@ -40,7 +37,11 @@ function Movies({ }) {
           filter(data, filterText, isShort)
           setIsLoading(false)
         })
-        .catch(err => console.log(err))
+        .catch(err => console.log(err),
+          setServerError(`Во время запроса произошла ошибка. Возможно, проблема с
+         соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`),
+          setIsLoading(false)
+        )
     } else {
       filter(videoAll, filterText, isShort)
       setIsLoading(false)
@@ -49,7 +50,6 @@ function Movies({ }) {
 
   function checkFilter() {
     if (!videoToShow) {
-      // setSerchError('Ничего не найдено')
       return
     }
     if (isShort) {
@@ -88,15 +88,13 @@ function Movies({ }) {
           onSerch={onSerch}
           setFilterText={setFilterText}
           checkFilter={checkFilter}
+          serverError={serverError}
         />
-
-        {searchError ?
-          <span className="search__form-input-error">{searchError}</span> : ''}
 
         {isLoading ? <Preloader /> :
           <MoviesCardList
-            movieCardList={videoToShow}
-
+            videoToShow={videoToShow}
+            currentUser={currentUser}
           />
         }
       </main>

@@ -3,37 +3,52 @@ import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 import SearchForm from "../Movies/SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
-import { movieCardList } from "../../utils/constants"
-import { useState } from "react";
-import { moviesApi } from "../../utils/MoviesApi";
+import { useEffect, useState } from "react";
+import { mainApi } from "../../utils/MainApi";
+import Preloader from "../Preloader/Preloader";
 
-function SavedMovies() {
+function SavedMovies({isLoading}) {
+  // const [isLoading, setIsLoading] = useState(false)
+  // const [myVideoToShow, setMyVideoToShow] = useState()
+  // const [serverError, setServerError] = useState('')
 
-  // const [movieCardList, setMovieCardList] = useState()
+  // useEffect(() => {
+  //   showMyMovies()
+
+  // }, [])
+
+  // const showMyMovies = () => {
+  //   setIsLoading(true)
+  //   mainApi.getMyMovies()
+  //     .then((data) => {
+  //       setMyVideoToShow(data)
+  //       // console.log(data)
+  //       setIsLoading(false)
+  //     })
+  //     .catch(err => {
+  //       console.log(err)
+  //       setServerError(`Во время запроса произошла ошибка. Возможно, проблема с
+  //     соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`)
+  //     })
+  // }
 
 
-  // const onSerch = (evt) => {
-  //   evt.preventDefault();
-  //   if (!localStorage.getItem('localMovies')) {
-  //     moviesApi.getMovies()
-  //       .then((data) => {
-  //         const video =  localStorage.setItem('localMovies', JSON.stringify(data))
 
-  //         setMovieCardList(video)
-
-  //       })
-
-  //       .catch(err => console.log(err))
-  //   } else { }
-
-  const savedMoviesList = movieCardList.filter((movieCard) => movieCard.saved)
 
   return (
     <>
       <Header />
       <main className="page__main">
-        <SearchForm />
-        <MoviesCardList movieCardList={savedMoviesList} />
+        <SearchForm
+          // serverError={serverError}
+        />
+
+        {isLoading ? <Preloader /> :
+          <MoviesCardList
+            // myVideoToShow={myVideoToShow}
+            // serverError={serverError}
+          />
+        }
       </main>
       <Footer />
     </>

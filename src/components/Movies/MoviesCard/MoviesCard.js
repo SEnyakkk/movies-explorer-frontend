@@ -1,14 +1,33 @@
 import { useLocation } from "react-router-dom";
 import "./MoviesCard.css"
 import { mainApi } from "../../../utils/MainApi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { CurrentUserContext } from "../../../context/CurrentUserContext";
 
-function MoviesCard({ movieCard }) {
+function MoviesCard({ movieCard, currentUser, onCardDelete, onCardLike, saved }) {
   const location = useLocation();
-  const myMovies = location.pathname === '/saved-movies'
-  const srcImage = myMovies ? movieCard.image : `${`https://api.nomoreparties.co`}${movieCard.image.url}`;
+
+   const srcImage = location.pathname === '/saved-movies' ? movieCard.image : `${`https://api.nomoreparties.co`}${movieCard.image.url}`
+  const [likedMovies, setLikedMovies] = useState([])
+
+  const saveButtonClass = `movies-card__save-button ${saved ? `movies-card__save-button_saved` : ''} button`
   const [cards, setCards] = useState([])
+
+
+  // console.log(likedMovies)
+  // console.log(movieCard)
+  // console.log(currentUser)
+
+  const handleDeleteCard = () => onCardDelete(movieCard._id)
+  const handleMovieLike = () => onCardLike(movieCard)
+
+  useEffect(() => {
+    // if (movieCard.owner)
+    //   setSaved(true)
+    // setLikedMovies(mainApi.getMyMovies(localStorage.token))
+    // setSaved(likedMovies.some(i => movieCard.id === i.movieId))
+  }, [])
 
   function durationHours(duration) {
     const m = duration % 60;
@@ -16,42 +35,15 @@ function MoviesCard({ movieCard }) {
     return h.toString() + "ч" + (m < 10 ? "0" : "") + m.toString() + "м";
   }
 
-    // country,
-    // director,
-    // duration,
-    // year,
-    // description,
-    // image,
-    // trailerLink,
-    // thumbnail,
-    // movieId,
-    // nameRU,
-    // nameEN
 
 
-  function handleMovieLike(card) {
-    const isLiked = cards.some(i => card.id === i.movieId);
 
-    if (!isLiked) {
-      mainApi.addMovie(card, localStorage.token)
-        .then((newCard) => {
-          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-        })
-        .catch(console.error);
-    } else {
-      mainApi.deleteMovie(card._id, localStorage.token)
-        .then((newCard) => {
-          setCards((state) => state.map((c) => c._id === card._id ? newCard : c));
-        })
-        .catch(console.error);
-    }
-  }
 
   return (
     <li className="movies-card">
       <div className="movies-card__container">
         {/* <Link to={movieCard.trailerLink} target='_blank'> */}
-          <img src={srcImage} alt={movieCard.nameRU} className="movies-card__image" />
+        <img src={srcImage} alt={movieCard.nameRU} className="movies-card__image" />
         {/* </Link > */}
         <div className="movies-card__info">
           <div>
@@ -60,23 +52,16 @@ function MoviesCard({ movieCard }) {
           </div>
           <div className="movies-card__checkbox">
             {location.pathname === '/saved-movies' &&
-              <button type="button" className="movies-card__button-delete button" />}
+              <button type="button" className="movies-card__button-delete button" onClick={handleDeleteCard} />}
             {location.pathname === '/movies' &&
-              <>{movieCard.saved
-                ?
-                <button type="button" className="movies-card__save-button movies-card__save-button_saved button"
+              <button type="button" className={saveButtonClass}
                 onClick={handleMovieLike}
-                ></button>
-                :
-                <button type="button" className="movies-card__save-button button"
-                  onClick={handleMovieLike}
-                ></button>}
-              </>
+              ></button>
             }
           </div>
         </div>
       </div>
-    </li>
+    </li >
   )
 }
 

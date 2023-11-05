@@ -65,7 +65,7 @@ class MainApi {
   getMyMovies(token) {
     return this._request(`/movies`, {
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
       }
     })
   }
@@ -83,9 +83,9 @@ class MainApi {
         duration: data.duration,
         year: data.year,
         description: data.description,
-        image: data.image.url,
+        image: `https://api.nomoreparties.co${data.image.url}`,
         trailerLink: data.trailerLink,
-        thumbnail: data.image.formats.thumbnail.url,
+        thumbnail: `https://api.nomoreparties.co${data.image.formats.thumbnail.url}`,
         movieId: data.id,
         nameRU: data.nameRU,
         nameEN: data.nameEN

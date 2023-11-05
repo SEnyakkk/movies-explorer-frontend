@@ -21,7 +21,8 @@ function Profile({ signOut, currentUser, setCurrentUser, tokenCheck }) {
   useEffect(() => {
     setValues({
       name: currentUser.name,
-      email: currentUser.email
+      email: currentUser.email,
+      _id: currentUser._id
     });
   }, [setValues, currentUser.email, currentUser.name]);
 
