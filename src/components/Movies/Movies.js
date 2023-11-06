@@ -9,7 +9,7 @@ import Preloader from "../Preloader/Preloader";
 import { mainApi } from "../../utils/MainApi";
 
 
-function Movies({ currentUser, showMyMovies, myVideoToShow }) {
+function Movies({ currentUser, showMyMovies, myVideoToShow, setMyVideoToShow, onCardDelete }) {
   const [serverError, setServerError] = useState('')
   const [isShort, setIsShort] = useState(false);
   const [videoAll, setVideoAll] = useState()
@@ -51,9 +51,6 @@ function Movies({ currentUser, showMyMovies, myVideoToShow }) {
     }
   }
 
-
-
-
   function checkFilter() {
     if (!videoToShow) {
       return
@@ -84,6 +81,33 @@ function Movies({ currentUser, showMyMovies, myVideoToShow }) {
     ))
   }
 
+  const onCardLike = (movieCard) => {
+    const isLiked = myVideoToShow ? myVideoToShow.some(i => movieCard.id === i.movieId) : ''
+    if (isLiked) {
+      const card = myVideoToShow.find(i => movieCard.id === i.movieId)
+      onCardDelete(card._id)
+    } else {
+      mainApi.addMovie(
+        movieCard,
+        localStorage.token
+      )
+      .then(data => {
+        setMyVideoToShow([data, ...myVideoToShow])
+        // .then((data) => {
+          // setMyVideoToShow(data)
+          // setMyVideoToShow([...myVideoToShow, data])
+          // setMyVideoToShow(...myVideoToShow, (data) => data.filter((c) => c._id !== movieCard))
+        })
+        .catch(console.error);
+    }
+  }
+
+  // const onCardDelete = (cardToDelete) => {
+  //   mainApi.deleteMovie(cardToDelete, localStorage.token)
+
+  //     .catch(console.error);
+  // }
+  // console.log(onCardDelete)
 
   return (
     <>
@@ -101,7 +125,11 @@ function Movies({ currentUser, showMyMovies, myVideoToShow }) {
           <MoviesCardList
             videoToShow={videoToShow}
             myVideoToShow={myVideoToShow}
+            setMyVideoToShow={setMyVideoToShow}
             currentUser={currentUser}
+            onCardLike={onCardLike}
+            onCardDelete={onCardDelete}
+            showMyMovies={showMyMovies}
           />
         }
       </main>

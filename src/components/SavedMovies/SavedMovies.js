@@ -7,10 +7,10 @@ import Preloader from "../Preloader/Preloader";
 import { mainApi } from "../../utils/MainApi";
 import { useEffect, useState } from "react";
 
-function SavedMovies({showMyMovies, myVideoToShow, setMyVideoToShow}) {
-  const [isLoading, setIsLoading] = useState(false)
+function SavedMovies({showMyMovies, myVideoToShow, setMyVideoToShow, onCardDelete}) {
+  // const [isLoading, setIsLoading] = useState(false)
   // const [myVideoToShow, setMyVideoToShow] = useState()
-  const [serverError, setServerError] = useState('')
+  // const [serverError, setServerError] = useState('')
 
   useEffect(() => {
     showMyMovies()
@@ -45,6 +45,7 @@ function SavedMovies({showMyMovies, myVideoToShow, setMyVideoToShow}) {
             myVideoToShow={myVideoToShow}
             setMyVideoToShow={setMyVideoToShow}
             showMyMovies={showMyMovies}
+            onCardDelete={onCardDelete}
             // serverError={serverError}
           />
 

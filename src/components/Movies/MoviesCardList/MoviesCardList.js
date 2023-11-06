@@ -6,38 +6,15 @@ import { useLocation } from "react-router-dom";
 import Preloader from "../../Preloader/Preloader";
 
 
-function MoviesCardList({ videoToShow, currentUser, myVideoToShow, setMyVideoToShow, showMyMovies }) {
-  // const [saved, setSaved] = useState(false)
-  // const [cards, setCards] = useState([])
+function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, myVideoToShow, setMyVideoToShow, showMyMovies }) {
   const location = useLocation()
 
-  // const [isLiked, setIsLiked] = useState()
   const [isLoading, setIsLoading] = useState(false)
-  // const [myVideoToShow, setMyVideoToShow] = useState([])
   const [serverError, setServerError] = useState('')
 
-  // const showMyMovies = () => {
-  //   setIsLoading(true)
-  //   mainApi.getMyMovies()
-  //     .then((data) => {
-  //       setMyVideoToShow(data)
-  //       // console.log(data)
-  //       setIsLoading(false)
-  //     })
-  //     .catch(err => {
-  //       console.log(err)
-  //       setServerError(`Во время запроса произошла ошибка. Возможно, проблема с
-  //     соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`)
-  //     })
-  // }
-
-  console.log(myVideoToShow)
+  // console.log(myVideoToShow)
 
   const cardList = (location.pathname === '/movies') ? videoToShow : myVideoToShow
-  // const saved = myVideoToShow.some(card => videoToShow.id === card.movieId)
-
-  // console.log(cards)
-  // console.log(videoToShow)
 
   // function onCardLike(movieCard) {
   //   const isLiked = myVideoToShow.some(card => movieCard.id === card.movieId)
@@ -55,7 +32,6 @@ function MoviesCardList({ videoToShow, currentUser, myVideoToShow, setMyVideoToS
   //     )
   //       .then((newCard) => {
   //         // setMyVideoToShow(...myVideoToShow, newCard)
-  //         // setMyVideoToShow((cards) => cards.filter((c) => c._id !== movieCard))
   //       })
   //       .catch(console.error);
   //   }
@@ -63,21 +39,16 @@ function MoviesCardList({ videoToShow, currentUser, myVideoToShow, setMyVideoToS
 
   // function onCardDelete(cardToDelete) {
   //   mainApi.deleteMovie(cardToDelete, localStorage.token)
-  //     .then(() => {
-  //       setMyVideoToShow((cards) => cards.filter((c) => c._id !== cardToDelete))
+      // .then(() => {
+      //   setMyVideoToShow((cards) => cards.filter((i) => i._id !== cardToDelete))
   //     })
   //     .catch(console.error);
   // }
 
   useEffect(() => {
-    // setIsLiked(myVideoToShow.some(i => movieCard.id === i.movieId))
-    // console.log(myVideoToShow)
-  }, [])
-
-  useEffect(() => {
-    if (location.pathname === '/saved-movies') {
-      showMyMovies()
-    }
+    // if (location.pathname === '/saved-movies') {
+      // showMyMovies()
+    // }
 
   }, [])
 
@@ -94,10 +65,9 @@ function MoviesCardList({ videoToShow, currentUser, myVideoToShow, setMyVideoToS
                 : card._id
             }
             movieCard={card}
-            // saved={saved}
-            // onCardLike={onCardLike}
+            onCardLike={onCardLike}
             currentUser={currentUser}
-            // onCardDelete={onCardDelete}
+            onCardDelete={onCardDelete}
             myVideoToShow={myVideoToShow}
             setMyVideoToShow={setMyVideoToShow}
 

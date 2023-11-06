@@ -74,6 +74,15 @@ function App() {
       })
   }
 
+  const onCardDelete = (cardToDelete) => {
+    mainApi.deleteMovie(cardToDelete, localStorage.token)
+      .then(() => {
+        setMyVideoToShow((cards) => cards.filter((c) => c._id !== cardToDelete))
+      })
+      .catch(console.error);
+  }
+  // console.log()
+
   return (
     isAppReady ? (<Preloader />) : (
       <CurrentUserContext.Provider value={currentUser}>
@@ -85,6 +94,8 @@ function App() {
               loggedIn={loggedIn}
               showMyMovies={showMyMovies}
               myVideoToShow={myVideoToShow}
+              setMyVideoToShow={setMyVideoToShow}
+              onCardDelete={onCardDelete}
               currentUser={currentUser}
             />}
             />
@@ -95,6 +106,7 @@ function App() {
               showMyMovies={showMyMovies}
               myVideoToShow={myVideoToShow}
               setMyVideoToShow={setMyVideoToShow}
+              onCardDelete={onCardDelete}
               loggedIn={loggedIn} />}
             />
 
