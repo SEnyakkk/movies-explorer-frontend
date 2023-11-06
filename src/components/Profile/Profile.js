@@ -7,12 +7,7 @@ import { mainApi } from "../../utils/MainApi";
 
 function Profile({ signOut, currentUser, setCurrentUser, tokenCheck }) {
   const { values, handleChange, errors, isValid, setValues, errorMsg, setErrorMsg, setIsValid } = useFormWithValidation();
-  // console.log(currentUser)
   const [isEdit, setIsEdit] = useState()
-
-  // useEffect(() => {
-  //   tokenCheck();
-  // }, [])
 
   function toggleEdit() {
     setIsEdit(edit => !edit);
@@ -22,7 +17,6 @@ function Profile({ signOut, currentUser, setCurrentUser, tokenCheck }) {
     setValues({
       name: currentUser.name,
       email: currentUser.email,
-      _id: currentUser._id
     });
   }, [setValues, currentUser.email, currentUser.name]);
 
@@ -34,6 +28,7 @@ function Profile({ signOut, currentUser, setCurrentUser, tokenCheck }) {
 
   function handleSubmit(evt) {
     evt.preventDefault();
+    setErrorMsg('сохранение...')
     mainApi.editProfile(values)
       .then((res) => {
         setCurrentUser({ name: res.name, email: res.email });
@@ -54,9 +49,7 @@ function Profile({ signOut, currentUser, setCurrentUser, tokenCheck }) {
           setErrorMsg("При редактировании данных пользователя произошла ошибка.");
         }
       })
-
   }
-
 
   return (
     <>

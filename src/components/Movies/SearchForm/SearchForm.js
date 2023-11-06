@@ -1,16 +1,19 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useFormWithValidation } from "../../../hooks/useFormWithValidation";
 import "./SearchForm.css"
+import { useLocation } from "react-router-dom";
 
 function SearchForm({ onSerch, setFilterText, checkFilter, isShort, serverError }) {
-  const { values, handleChange, errors, isValid, errorMsg, setValues, setErrorMsg } = useFormWithValidation();
+  const { values, handleChange, errorMsg, setValues, setErrorMsg } = useFormWithValidation();
+  const location = useLocation()
 
   useEffect(() => {
-    setValues({
-      filterText: localStorage.filterText,
-    });
-
-  }, []);
+    if (location.pathname === '/movies') {
+      setValues({
+        filterText: localStorage.filterText,
+      });
+    }
+  }, [setValues]);
 
   function onSubmit(evt) {
     evt.preventDefault()

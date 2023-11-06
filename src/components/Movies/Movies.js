@@ -9,14 +9,14 @@ import Preloader from "../Preloader/Preloader";
 import { mainApi } from "../../utils/MainApi";
 
 
-function Movies({ currentUser, showMyMovies, myVideoToShow, setMyVideoToShow, onCardDelete }) {
-  const [serverError, setServerError] = useState('')
-  const [isShort, setIsShort] = useState(false);
+function Movies({ currentUser, showMyMovies, myVideoToShow, setMyVideoToShow, onCardDelete, isLoading, setIsLoading, serverError, setServerError }) {
+  // const [serverError, setServerError] = useState('')
+  const [isShort, setIsShort] = useState(false)
   const [videoAll, setVideoAll] = useState()
-  const [isLoading, setIsLoading] = useState(false)
-  const [filterText, setFilterText] = useState('');
+  const [filterText, setFilterText] = useState('')
   const [videoToShow, setVideoToShow] = useState()
-  // const [myVideoToShow, setMyVideoToShow] = useState()
+  const [isLiked, setIsLiked] = useState()
+  const [cardToDelete, setCardToDelet] = useState()
 
   useEffect(() => {
     showMyMovies()
@@ -82,32 +82,21 @@ function Movies({ currentUser, showMyMovies, myVideoToShow, setMyVideoToShow, on
   }
 
   const onCardLike = (movieCard) => {
-    const isLiked = myVideoToShow ? myVideoToShow.some(i => movieCard.id === i.movieId) : ''
+    setIsLiked(myVideoToShow.some(i => movieCard.id === i.movieId))
     if (isLiked) {
-      const card = myVideoToShow.find(i => movieCard.id === i.movieId)
-      onCardDelete(card._id)
+      setCardToDelet(myVideoToShow.find(i => movieCard.id === i.movieId))
+      onCardDelete(cardToDelete._id)
     } else {
       mainApi.addMovie(
         movieCard,
         localStorage.token
       )
-      .then(data => {
-        setMyVideoToShow([data, ...myVideoToShow])
-        // .then((data) => {
-          // setMyVideoToShow(data)
-          // setMyVideoToShow([...myVideoToShow, data])
-          // setMyVideoToShow(...myVideoToShow, (data) => data.filter((c) => c._id !== movieCard))
+        .then(data => {
+          setMyVideoToShow([data, ...myVideoToShow])
         })
         .catch(console.error);
     }
   }
-
-  // const onCardDelete = (cardToDelete) => {
-  //   mainApi.deleteMovie(cardToDelete, localStorage.token)
-
-  //     .catch(console.error);
-  // }
-  // console.log(onCardDelete)
 
   return (
     <>
@@ -130,6 +119,8 @@ function Movies({ currentUser, showMyMovies, myVideoToShow, setMyVideoToShow, on
             onCardLike={onCardLike}
             onCardDelete={onCardDelete}
             showMyMovies={showMyMovies}
+            isLoading={isLoading}
+
           />
         }
       </main>

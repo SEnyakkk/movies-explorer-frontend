@@ -23,7 +23,6 @@ function App() {
   const [isLoading, setIsLoading] = useState(false)
   const [myVideoToShow, setMyVideoToShow] = useState()
   const [serverError, setServerError] = useState('')
-
   const location = useLocation()
   const path = location.pathname
 
@@ -31,7 +30,7 @@ function App() {
   useEffect(() => {
     tokenCheck()
 
-  }, [localStorage.token])
+  }, [])
 
   function tokenCheck() {
     const token = localStorage.getItem('token');
@@ -64,24 +63,23 @@ function App() {
     mainApi.getMyMovies()
       .then((data) => {
         setMyVideoToShow(data)
-        // console.log(data)
         setIsLoading(false)
       })
       .catch(err => {
         console.log(err)
         setServerError(`Во время запроса произошла ошибка. Возможно, проблема с
       соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`)
+      setIsLoading(false)
       })
   }
 
   const onCardDelete = (cardToDelete) => {
     mainApi.deleteMovie(cardToDelete, localStorage.token)
       .then(() => {
-        setMyVideoToShow((cards) => cards.filter((c) => c._id !== cardToDelete))
+        setMyVideoToShow((cards) => cards.filter((i) => i._id !== cardToDelete))
       })
       .catch(console.error);
   }
-  // console.log()
 
   return (
     isAppReady ? (<Preloader />) : (
@@ -97,6 +95,9 @@ function App() {
               setMyVideoToShow={setMyVideoToShow}
               onCardDelete={onCardDelete}
               currentUser={currentUser}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+              serverError={serverError}
             />}
             />
 
@@ -107,7 +108,10 @@ function App() {
               myVideoToShow={myVideoToShow}
               setMyVideoToShow={setMyVideoToShow}
               onCardDelete={onCardDelete}
-              loggedIn={loggedIn} />}
+              loggedIn={loggedIn}
+              isLoading={isLoading}
+              setIsLoading={setIsLoading}
+            />}
             />
 
             <Route path="/profile" element={<ProtectedRoute
