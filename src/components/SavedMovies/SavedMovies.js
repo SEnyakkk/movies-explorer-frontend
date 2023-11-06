@@ -3,19 +3,19 @@ import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 import SearchForm from "../Movies/SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
-import { useEffect, useState } from "react";
-import { mainApi } from "../../utils/MainApi";
 import Preloader from "../Preloader/Preloader";
+import { mainApi } from "../../utils/MainApi";
+import { useEffect, useState } from "react";
 
-function SavedMovies({isLoading}) {
-  // const [isLoading, setIsLoading] = useState(false)
+function SavedMovies({showMyMovies, myVideoToShow, setMyVideoToShow}) {
+  const [isLoading, setIsLoading] = useState(false)
   // const [myVideoToShow, setMyVideoToShow] = useState()
-  // const [serverError, setServerError] = useState('')
+  const [serverError, setServerError] = useState('')
 
-  // useEffect(() => {
-  //   showMyMovies()
+  useEffect(() => {
+    showMyMovies()
 
-  // }, [])
+  }, [])
 
   // const showMyMovies = () => {
   //   setIsLoading(true)
@@ -32,9 +32,6 @@ function SavedMovies({isLoading}) {
   //     })
   // }
 
-
-
-
   return (
     <>
       <Header />
@@ -43,12 +40,14 @@ function SavedMovies({isLoading}) {
           // serverError={serverError}
         />
 
-        {isLoading ? <Preloader /> :
+
           <MoviesCardList
-            // myVideoToShow={myVideoToShow}
+            myVideoToShow={myVideoToShow}
+            setMyVideoToShow={setMyVideoToShow}
+            showMyMovies={showMyMovies}
             // serverError={serverError}
           />
-        }
+
       </main>
       <Footer />
     </>

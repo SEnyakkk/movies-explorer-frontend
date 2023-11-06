@@ -6,18 +6,20 @@ import "./Movies.css";
 import MoviesCardList from "./MoviesCardList/MoviesCardList";
 import SearchForm from "./SearchForm/SearchForm";
 import Preloader from "../Preloader/Preloader";
+import { mainApi } from "../../utils/MainApi";
 
 
-function Movies({ currentUser }) {
+function Movies({ currentUser, showMyMovies, myVideoToShow }) {
   const [serverError, setServerError] = useState('')
   const [isShort, setIsShort] = useState(false);
   const [videoAll, setVideoAll] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [filterText, setFilterText] = useState('');
   const [videoToShow, setVideoToShow] = useState()
+  // const [myVideoToShow, setMyVideoToShow] = useState()
 
   useEffect(() => {
-
+    showMyMovies()
     setIsShort(localStorage.filterCheckbox === "true")
     if (localStorage.localMovies) {
       setVideoAll(JSON.parse(localStorage.localMovies))
@@ -37,16 +39,20 @@ function Movies({ currentUser }) {
           filter(data, filterText, isShort)
           setIsLoading(false)
         })
-        .catch(err => console.log(err),
+        .catch(err => {
+          console.error(err)
           setServerError(`Во время запроса произошла ошибка. Возможно, проблема с
-         соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`),
+         соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`)
           setIsLoading(false)
-        )
+        })
     } else {
       filter(videoAll, filterText, isShort)
       setIsLoading(false)
     }
   }
+
+
+
 
   function checkFilter() {
     if (!videoToShow) {
@@ -55,12 +61,12 @@ function Movies({ currentUser }) {
     if (isShort) {
       setIsShort(false);
       localStorage.setItem('filterCheckbox', false)
-      filter(videoAll, filterText, false)
+      filter(videoAll, localStorage.filterText, false)
     }
     if (!isShort) {
       setIsShort(true);
       localStorage.setItem('filterCheckbox', true)
-      filter(videoAll, filterText, true)
+      filter(videoAll, localStorage.filterText, true)
     }
   }
 
@@ -94,6 +100,7 @@ function Movies({ currentUser }) {
         {isLoading ? <Preloader /> :
           <MoviesCardList
             videoToShow={videoToShow}
+            myVideoToShow={myVideoToShow}
             currentUser={currentUser}
           />
         }

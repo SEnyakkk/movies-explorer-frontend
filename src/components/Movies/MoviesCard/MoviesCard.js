@@ -5,29 +5,41 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { CurrentUserContext } from "../../../context/CurrentUserContext";
 
-function MoviesCard({ movieCard, currentUser, onCardDelete, onCardLike, saved }) {
+function MoviesCard({ movieCard, currentUser,
+  // saved, onCardDelete, onCardLike,
+  myVideoToShow, setMyVideoToShow }) {
   const location = useLocation();
 
-   const srcImage = location.pathname === '/saved-movies' ? movieCard.image : `${`https://api.nomoreparties.co`}${movieCard.image.url}`
-  const [likedMovies, setLikedMovies] = useState([])
+  const srcImage = location.pathname === '/saved-movies' ? movieCard.image : `${`https://api.nomoreparties.co`}${movieCard.image.url}`
 
-  const saveButtonClass = `movies-card__save-button ${saved ? `movies-card__save-button_saved` : ''} button`
-  const [cards, setCards] = useState([])
+  const [isLiked, setIsLiked] = useState()
+
+  const saveButtonClass = `movies-card__save-button ${isLiked ? `movies-card__save-button_saved` : ''} button`
+  // const [card, setCard] = useState([])
 
 
-  // console.log(likedMovies)
-  // console.log(movieCard)
-  // console.log(currentUser)
+  // console.log(isLiked)
+  console.log(movieCard)
+  console.log(myVideoToShow)
 
   const handleDeleteCard = () => onCardDelete(movieCard._id)
-  const handleMovieLike = () => onCardLike(movieCard)
 
-  useEffect(() => {
-    // if (movieCard.owner)
-    //   setSaved(true)
-    // setLikedMovies(mainApi.getMyMovies(localStorage.token))
-    // setSaved(likedMovies.some(i => movieCard.id === i.movieId))
-  }, [])
+  const handleMovieLike = () => {
+    if (myVideoToShow.some(i => movieCard.id === i.movieId)) {
+      onCardLike(movieCard)
+    } else {
+      onCardLike(movieCard)
+    }
+  }
+
+
+  // useEffect(() => {
+  //   setIsLiked(myVideoToShow.some(i => movieCard.id === i.movieId))
+  //   console.log(myVideoToShow)
+  // }, [])
+
+
+  // console.log(card)
 
   function durationHours(duration) {
     const m = duration % 60;
@@ -35,29 +47,53 @@ function MoviesCard({ movieCard, currentUser, onCardDelete, onCardLike, saved })
     return h.toString() + "ч" + (m < 10 ? "0" : "") + m.toString() + "м";
   }
 
+  const onCardLike = (movieCard) => {
+    let isLiked = myVideoToShow.some(i => movieCard.id === i.movieId)
+    if (isLiked) {
+      let card = myVideoToShow.find(i => movieCard.id === i.movieId)
+      console.log(card)
+      onCardDelete(card._id)
+    } else {
+      mainApi.addMovie(
+        movieCard,
+        localStorage.token
+      )
+        .then((data) => {
+          setMyVideoToShow(data)
+        })
+        .catch(console.error);
+    }
+  }
 
+  const onCardDelete = (cardToDelete) => {
+    mainApi.deleteMovie(cardToDelete, localStorage.token)
 
-
+      .catch(console.error);
+  }
 
   return (
     <li className="movies-card">
       <div className="movies-card__container">
-        {/* <Link to={movieCard.trailerLink} target='_blank'> */}
-        <img src={srcImage} alt={movieCard.nameRU} className="movies-card__image" />
-        {/* </Link > */}
+        <Link to={movieCard.trailerLink} target='_blank'>
+          <img src={srcImage} alt={movieCard.nameRU} className="movies-card__image" />
+        </Link >
         <div className="movies-card__info">
           <div>
             <h2 className="movies-card__title">{movieCard.nameRU}</h2>
             <p className="movies-card__duration">{durationHours(movieCard.duration)}</p>
           </div>
           <div className="movies-card__checkbox">
+
             {location.pathname === '/saved-movies' &&
-              <button type="button" className="movies-card__button-delete button" onClick={handleDeleteCard} />}
+              <button type="button"
+                className="movies-card__button-delete button"
+                onClick={handleDeleteCard} />}
+
             {location.pathname === '/movies' &&
-              <button type="button" className={saveButtonClass}
-                onClick={handleMovieLike}
-              ></button>
-            }
+              <button type="button"
+                className={saveButtonClass}
+                onClick={handleMovieLike} />}
+
           </div>
         </div>
       </div>

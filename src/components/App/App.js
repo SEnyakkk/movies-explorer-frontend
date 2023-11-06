@@ -21,12 +21,16 @@ function App() {
   const [currentUser, setCurrentUser] = useState({})
   const [isAppReady, setisAppReady] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
+  const [myVideoToShow, setMyVideoToShow] = useState()
+  const [serverError, setServerError] = useState('')
+
   const location = useLocation()
   const path = location.pathname
 
 
   useEffect(() => {
-    tokenCheck();
+    tokenCheck()
+
   }, [localStorage.token])
 
   function tokenCheck() {
@@ -55,6 +59,21 @@ function App() {
     setLoggedIn(false);
   }
 
+  const showMyMovies = () => {
+    setIsLoading(true)
+    mainApi.getMyMovies()
+      .then((data) => {
+        setMyVideoToShow(data)
+        // console.log(data)
+        setIsLoading(false)
+      })
+      .catch(err => {
+        console.log(err)
+        setServerError(`Во время запроса произошла ошибка. Возможно, проблема с
+      соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`)
+      })
+  }
+
   return (
     isAppReady ? (<Preloader />) : (
       <CurrentUserContext.Provider value={currentUser}>
@@ -64,6 +83,8 @@ function App() {
             <Route path="/movies" element={<ProtectedRoute
               element={Movies}
               loggedIn={loggedIn}
+              showMyMovies={showMyMovies}
+              myVideoToShow={myVideoToShow}
               currentUser={currentUser}
             />}
             />
@@ -71,6 +92,9 @@ function App() {
             <Route path="/saved-movies" element={<ProtectedRoute
               element={SavedMovies}
               path={"/saved-movies"}
+              showMyMovies={showMyMovies}
+              myVideoToShow={myVideoToShow}
+              setMyVideoToShow={setMyVideoToShow}
               loggedIn={loggedIn} />}
             />
 
