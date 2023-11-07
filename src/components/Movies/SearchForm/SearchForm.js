@@ -18,8 +18,10 @@ function SearchForm({ onSerch, setFilterText, checkFilter, isShort, serverError 
   function onSubmit(evt) {
     evt.preventDefault()
     if (evt.target.filterText.value) {
-      setFilterText(evt.target.filterText.value)
-      localStorage.setItem('filterText', evt.target.filterText.value)
+      if (location.pathname === '/movies') {
+        setFilterText(evt.target.filterText.value)
+        localStorage.setItem('filterText', evt.target.filterText.value)
+      }
       onSerch(evt.target.filterText.value)
     } else { setErrorMsg(`Нужно ввести ключевое слово`) }
   }

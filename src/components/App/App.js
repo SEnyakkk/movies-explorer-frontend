@@ -13,6 +13,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { CurrentUserContext } from '../../context/CurrentUserContext';
 import { mainApi } from '../../utils/MainApi';
 import Preloader from '../Preloader/Preloader';
+import { moviesApi } from '../../utils/MoviesApi';
 
 
 function App() {
@@ -25,7 +26,10 @@ function App() {
   const [serverError, setServerError] = useState('')
   const location = useLocation()
   const path = location.pathname
-
+  const [isShort, setIsShort] = useState(false)
+  const [videoAll, setVideoAll] = useState()
+  const [filterText, setFilterText] = useState('')
+  const [videoToShow, setVideoToShow] = useState()
 
   useEffect(() => {
     tokenCheck()
@@ -69,7 +73,7 @@ function App() {
         console.log(err)
         setServerError(`Во время запроса произошла ошибка. Возможно, проблема с
       соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`)
-      setIsLoading(false)
+        setIsLoading(false)
       })
   }
 
@@ -79,6 +83,56 @@ function App() {
         setMyVideoToShow((cards) => cards.filter((i) => i._id !== cardToDelete))
       })
       .catch(console.error);
+  }
+
+  const onSerch = (filterText) => {
+    setIsLoading(true)
+    if (!localStorage.getItem('localMovies')) {
+      moviesApi.getMovies()
+        .then((data) => {
+          localStorage.setItem('localMovies', JSON.stringify(data))
+          filter(data, filterText, isShort)
+          setIsLoading(false)
+        })
+        .catch(err => {
+          console.error(err)
+          setServerError(`Во время запроса произошла ошибка. Возможно, проблема с
+         соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`)
+          setIsLoading(false)
+        })
+    } else {
+      filter(videoAll, filterText, isShort)
+      setIsLoading(false)
+    }
+  }
+
+  function filter(videoAll, filterText, isShort) {
+    localStorage.setItem('serchResult', JSON.stringify(videoAll.filter((video) => {
+      if (!isShort) {
+        const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase())
+        return serchResult
+      } else {
+        const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase()) && video.duration <= "40"
+        return serchResult
+      }
+    })
+    ))
+  }
+
+  function checkFilter() {
+    if (!videoToShow) {
+      return
+    }
+    if (isShort) {
+      setIsShort(false);
+      localStorage.setItem('filterCheckbox', false)
+      filter(videoAll, localStorage.filterText, false)
+    }
+    if (!isShort) {
+      setIsShort(true);
+      localStorage.setItem('filterCheckbox', true)
+      filter(videoAll, localStorage.filterText, true)
+    }
   }
 
   return (
@@ -98,6 +152,14 @@ function App() {
               isLoading={isLoading}
               setIsLoading={setIsLoading}
               serverError={serverError}
+              checkFilter={checkFilter}
+              isShort={isShort}
+              setIsShort={setIsShort}
+              videoToShow={videoToShow}
+              setVideoToShow={setVideoToShow}
+              setVideoAll={setVideoAll}
+              onSerch={onSerch}
+              setFilterText={setFilterText}
             />}
             />
 
@@ -111,6 +173,7 @@ function App() {
               loggedIn={loggedIn}
               isLoading={isLoading}
               setIsLoading={setIsLoading}
+              filterText={filterText}
             />}
             />
 

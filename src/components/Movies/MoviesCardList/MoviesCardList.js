@@ -4,9 +4,9 @@ import { useLocation } from "react-router-dom";
 import Preloader from "../../Preloader/Preloader";
 
 
-function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, myVideoToShow, setMyVideoToShow, isLoading }) {
+function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, myVideoToShow, setMyVideoToShow, isLoading, fitervideo }) {
   const location = useLocation()
-  const cardList = (location.pathname === '/movies') ? videoToShow : myVideoToShow
+  const cardList = (location.pathname === '/movies') ? videoToShow : (fitervideo ? fitervideo : myVideoToShow)
 
   return (
     isLoading ? <Preloader /> :
@@ -34,7 +34,9 @@ function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, my
             ?
             (cardList.length === 0
               ?
-              <span className="search__form-input-error">{location.pathname === '/movies' ? 'Ничего не найдено' : 'Нет сохраненных видео'}</span>
+              <span className="search__form-input-error">{location.pathname === '/movies'
+                ? 'Ничего не найдено'
+                : 'Нет сохраненных видео'}</span>
               : (location.pathname === '/movies'
                 ?
                 <button type="button" className="movies__more-button button">Еще</button>

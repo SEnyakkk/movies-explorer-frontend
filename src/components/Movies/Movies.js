@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { moviesApi } from "../../utils/MoviesApi";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import "./Movies.css";
@@ -9,12 +8,11 @@ import Preloader from "../Preloader/Preloader";
 import { mainApi } from "../../utils/MainApi";
 
 
-function Movies({ currentUser, showMyMovies, myVideoToShow, setMyVideoToShow, onCardDelete, isLoading, setIsLoading, serverError, setServerError }) {
-  // const [serverError, setServerError] = useState('')
-  const [isShort, setIsShort] = useState(false)
-  const [videoAll, setVideoAll] = useState()
-  const [filterText, setFilterText] = useState('')
-  const [videoToShow, setVideoToShow] = useState()
+function Movies({ currentUser, showMyMovies, myVideoToShow, setMyVideoToShow,
+  onCardDelete, isLoading, serverError, checkFilter, isShort, setIsShort,
+  setFilterText, videoToShow, setVideoToShow, setVideoAll, onSerch,
+}) {
+console.log()
   const [isLiked, setIsLiked] = useState()
   const [cardToDelete, setCardToDelet] = useState()
 
@@ -29,57 +27,6 @@ function Movies({ currentUser, showMyMovies, myVideoToShow, setMyVideoToShow, on
     }
 
   }, [localStorage.serchResult])
-
-  const onSerch = (filterText) => {
-    setIsLoading(true)
-    if (!localStorage.getItem('localMovies')) {
-      moviesApi.getMovies()
-        .then((data) => {
-          localStorage.setItem('localMovies', JSON.stringify(data))
-          filter(data, filterText, isShort)
-          setIsLoading(false)
-        })
-        .catch(err => {
-          console.error(err)
-          setServerError(`Во время запроса произошла ошибка. Возможно, проблема с
-         соединением или сервер недоступен. Подождите немного и попробуйте ещё раз`)
-          setIsLoading(false)
-        })
-    } else {
-      filter(videoAll, filterText, isShort)
-      setIsLoading(false)
-    }
-  }
-
-  function checkFilter() {
-    if (!videoToShow) {
-      return
-    }
-    if (isShort) {
-      setIsShort(false);
-      localStorage.setItem('filterCheckbox', false)
-      filter(videoAll, localStorage.filterText, false)
-    }
-    if (!isShort) {
-      setIsShort(true);
-      localStorage.setItem('filterCheckbox', true)
-      filter(videoAll, localStorage.filterText, true)
-    }
-  }
-
-  function filter(videoAll, filterText, isShort) {
-
-    localStorage.setItem('serchResult', JSON.stringify(videoAll.filter((video) => {
-      if (!isShort) {
-        const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase())
-        return serchResult
-      } else {
-        const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase()) && video.duration <= "40"
-        return serchResult
-      }
-    })
-    ))
-  }
 
   const onCardLike = (movieCard) => {
     setIsLiked(myVideoToShow.some(i => movieCard.id === i.movieId))
