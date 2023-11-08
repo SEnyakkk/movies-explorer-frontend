@@ -1,7 +1,7 @@
 class MainApi {
   constructor() {
     // this._url = 'http://localhost:3000';
-    this._url = 'https://api.sen.nomoredomainsrocks.ru/';
+    this._url = 'https://api.sen.nomoredomainsrocks.ru';
   }
 
   _isResOk(res) {
