@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { mainApi } from "../../utils/MainApi";
 
 
-function Profile({ signOut, currentUser, setCurrentUser, tokenCheck }) {
+function Profile({ signOut, currentUser, setCurrentUser }) {
   const { values, handleChange, errors, isValid, setValues, errorMsg, setErrorMsg, setIsValid } = useFormWithValidation();
   const [isEdit, setIsEdit] = useState()
 

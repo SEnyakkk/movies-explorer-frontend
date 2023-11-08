@@ -5,7 +5,7 @@ import Preloader from "../../Preloader/Preloader";
 import { useEffect, useState } from "react";
 
 
-function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, myVideoToShow, setMyVideoToShow, isLoading, fitervideo }) {
+function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, myVideoToShow, isLoading, fitervideo }) {
   const location = useLocation()
   const [sliceEnd, SetSliceEnd] = useState('')
   const cardList = ((location.pathname === '/movies' && videoToShow)
