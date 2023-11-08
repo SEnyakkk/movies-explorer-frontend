@@ -60,7 +60,8 @@ function App() {
     localStorage.clear();
     navigate('/');
     setLoggedIn(false);
-
+    setVideoAll()
+    setVideoToShow()
   }
 
   const showMyMovies = () => {
