@@ -5,25 +5,14 @@ import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import Preloader from "../Preloader/Preloader";
 import { useEffect, useState } from "react";
-import { mainApi } from "../../utils/MainApi";
 
-function SavedMovies({
-  onCardDelete,
-  serverError, isLoading,
-  // isShort, setIsShort, checkFilter,
-  showMyMovies, setMyVideoToShow, currentUser, myVideoToShow,
-  setFilterText, videoToShow, setVideoToShow, setVideoAll, filterText }) {
+function SavedMovies({ onCardDelete, serverError, isLoading, showMyMovies, setMyVideoToShow, myVideoToShow, setFilterText, filterText }) {
 
   const [isShort, setIsShort] = useState(false)
   const [fitervideo, setFiltervideo] = useState()
-  // const [isLoading, setIsLoading] = useState(false)
-  // const [myVideoToShow, setMyVideoToShow] = useState()
-  // const [serverError, setServerError] = useState('')
 
   useEffect(() => {
     showMyMovies()
-    // if(myVideoToShow){onSerch(filterText)}
-
   }, [])
 
   function onSerch(filterText) {

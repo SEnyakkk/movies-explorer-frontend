@@ -12,7 +12,7 @@ function Movies({ currentUser, showMyMovies, myVideoToShow, setMyVideoToShow,
   onCardDelete, isLoading, serverError, checkFilter, isShort, setIsShort,
   setFilterText, videoToShow, setVideoToShow, setVideoAll, onSerch,
 }) {
-console.log()
+  console.log()
   const [isLiked, setIsLiked] = useState()
   const [cardToDelete, setCardToDelet] = useState()
 

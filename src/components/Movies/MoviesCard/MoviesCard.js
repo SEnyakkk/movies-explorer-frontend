@@ -2,7 +2,7 @@ import { useLocation } from "react-router-dom";
 import "./MoviesCard.css"
 import { Link } from "react-router-dom";
 
-function MoviesCard({ movieCard, onCardDelete, onCardLike, myVideoToShow, isLoading }) {
+function MoviesCard({ movieCard, onCardDelete, onCardLike, myVideoToShow }) {
   const location = useLocation();
   const srcImage = location.pathname === '/saved-movies' ? movieCard.image : `${`https://api.nomoreparties.co`}${movieCard.image.url}`
   const isLiked = myVideoToShow ? myVideoToShow.some(i => movieCard.id === i.movieId) : ''

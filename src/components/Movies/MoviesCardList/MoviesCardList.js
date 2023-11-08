@@ -2,11 +2,64 @@ import MoviesCard from "../MoviesCard/MoviesCard";
 import "./MoviesCardList.css"
 import { useLocation } from "react-router-dom";
 import Preloader from "../../Preloader/Preloader";
+import { useEffect, useState } from "react";
 
 
 function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, myVideoToShow, setMyVideoToShow, isLoading, fitervideo }) {
   const location = useLocation()
-  const cardList = (location.pathname === '/movies') ? videoToShow : (fitervideo ? fitervideo : myVideoToShow)
+  const [sliceEnd, SetSliceEnd] = useState('')
+  const cardList = ((location.pathname === '/movies' && videoToShow)
+    ? videoToShow.slice(0, sliceEnd)
+    : (location.pathname === '/saved-movies' && myVideoToShow) ? (fitervideo ? fitervideo : myVideoToShow) : '')
+
+  function renderCards() {
+    const config = { show: 16, more: 4 }
+    if (window.innerWidth < 1280) {
+      config.show = 12
+      config.more = 3
+    }
+    if (window.innerWidth < 1135) {
+      config.show = 8
+      config.more = 2
+    }
+    if (window.innerWidth < 619) {
+      config.show = 5
+      config.more = 2
+    }
+    return config
+  }
+
+  function showMore() {
+    SetSliceEnd(sliceEnd + renderCards().more)
+  }
+
+  useEffect(() => {
+    if (location.pathname === '/movies') {
+      function resizeRender() {
+        if (window.innerWidth >= 1280) {
+          SetSliceEnd(renderCards().show)
+        }
+        if (window.innerWidth < 1280) {
+          SetSliceEnd(renderCards().show)
+        }
+        if (window.innerWidth < 1135) {
+          SetSliceEnd(renderCards().show)
+        }
+        if (window.innerWidth < 619) {
+          SetSliceEnd(renderCards().show)
+        }
+      }
+
+      SetSliceEnd(renderCards().show)
+
+      window.addEventListener('resize', () => {
+        setTimeout(resizeRender, 1000)
+      })
+      return () => window.removeEventListener('resize', () => {
+        setTimeout(resizeRender, 1000)
+      })
+    }
+  }, [location])
 
   return (
     isLoading ? <Preloader /> :
@@ -24,7 +77,7 @@ function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, my
             currentUser={currentUser}
             onCardDelete={onCardDelete}
             myVideoToShow={myVideoToShow}
-            setMyVideoToShow={setMyVideoToShow}
+            // setMyVideoToShow={setMyVideoToShow}
             isLoading={isLoading}
           />)) : ''}
         </ul>
@@ -37,9 +90,12 @@ function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, my
               <span className="search__form-input-error">{location.pathname === '/movies'
                 ? 'Ничего не найдено'
                 : 'Нет сохраненных видео'}</span>
-              : (location.pathname === '/movies'
+              : (location.pathname === '/movies' && sliceEnd <= videoToShow.length
                 ?
-                <button type="button" className="movies__more-button button">Еще</button>
+                <button
+                  onClick={showMore}
+                  type="button"
+                  className="movies__more-button button">Еще</button>
                 : ''))
             : ''}
 
