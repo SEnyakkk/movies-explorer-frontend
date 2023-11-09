@@ -3,14 +3,14 @@ import Logo from "../Logo/Logo"
 import Navigation from "../Navigation/Navigation"
 import "./Header.css"
 
-function Header() {
+function Header({loggedIn}) {
   const location = useLocation();
-  return (
+     return (
 
     <header className={`header ${location.pathname === '/' ? 'header_theme_promo' : 'header_theme_main'}`}>
       <div className="header__container">
         <Logo />
-        <Navigation />
+        <Navigation loggedIn={loggedIn}/>
       </div>
     </header>
   )

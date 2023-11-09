@@ -3,22 +3,77 @@ import MoviesCardList from "../Movies/MoviesCardList/MoviesCardList";
 import SearchForm from "../Movies/SearchForm/SearchForm";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
-import { movieCardList } from "../../utils/constants"
+import Preloader from "../Preloader/Preloader";
+import { useEffect, useState } from "react";
 
-function SavedMovies() {
+function SavedMovies({ onCardDelete, serverError, isLoading, showMyMovies, setMyVideoToShow, myVideoToShow, setFilterText, filterText }) {
 
-  const savedMoviesList = movieCardList.filter((movieCard) => movieCard.saved)
+  const [isShort, setIsShort] = useState(false)
+  const [fitervideo, setFiltervideo] = useState()
+
+  useEffect(() => {
+    showMyMovies()
+  }, [])
+
+  function onSerch(filterText) {
+    filter(myVideoToShow, filterText, isShort)
+  }
+
+  function filter(myVideoToShow, filterText, isShort) {
+    let fitervideo = myVideoToShow
+    setFiltervideo(fitervideo.filter((video) => {
+      if (!isShort) {
+        const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase())
+        return serchResult
+      } else {
+        const serchResult = video.nameRU.toLowerCase().includes(filterText.toLowerCase()) && video.duration <= "40"
+        return serchResult
+      }
+    }))
+  }
+
+  const checkFilter = (fitervideo) => {
+    if (!fitervideo) {
+      return
+    }
+    if (isShort) {
+      setIsShort(false);
+      filter(myVideoToShow, filterText, false)
+    }
+    if (!isShort) {
+      setIsShort(true);
+      filter(myVideoToShow, filterText, true)
+    }
+  }
 
   return (
     <>
       <Header />
       <main className="page__main">
-        <SearchForm />
-        <MoviesCardList movieCardList={savedMoviesList} />
+        <SearchForm
+          isShort={isShort}
+          onSerch={onSerch}
+          setFilterText={setFilterText}
+          checkFilter={checkFilter}
+          serverError={serverError}
+        />
+
+        {isLoading ? <Preloader /> :
+          <MoviesCardList
+            myVideoToShow={myVideoToShow}
+            fitervideo={fitervideo}
+            setMyVideoToShow={setMyVideoToShow}
+            showMyMovies={showMyMovies}
+            onCardDelete={onCardDelete}
+            isLoading={isLoading}
+
+          />
+        }
       </main>
       <Footer />
     </>
   )
 }
+
 
 export default SavedMovies
