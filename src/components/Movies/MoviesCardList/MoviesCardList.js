@@ -77,7 +77,6 @@ function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, my
             currentUser={currentUser}
             onCardDelete={onCardDelete}
             myVideoToShow={myVideoToShow}
-            // setMyVideoToShow={setMyVideoToShow}
             isLoading={isLoading}
           />)) : ''}
         </ul>
@@ -90,7 +89,7 @@ function MoviesCardList({ onCardDelete, onCardLike, videoToShow, currentUser, my
               <span className="search__form-input-error">{location.pathname === '/movies'
                 ? 'Ничего не найдено'
                 : 'Нет сохраненных видео'}</span>
-              : (location.pathname === '/movies' && sliceEnd <= videoToShow.length
+              : (location.pathname === '/movies' && sliceEnd < videoToShow.length
                 ?
                 <button
                   onClick={showMore}
